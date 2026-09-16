@@ -18,9 +18,12 @@ export default function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
         <Link
           href="/"
-          className="font-display text-lg tracking-tight text-ink"
+          className="flex items-center gap-2.5 font-display text-lg tracking-tight text-ink"
           onClick={() => setOpen(false)}
         >
+          <span className="flex h-6 w-6 items-center justify-center border border-ink text-xs not-italic">
+            R
+          </span>
           Reniel Tejones
         </Link>
 

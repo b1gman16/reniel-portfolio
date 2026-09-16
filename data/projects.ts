@@ -10,7 +10,8 @@ export type Project = {
   tags: string[];
   oneLiner: string;
   summary: string;
-  visual: "hallguard" | "homeops" | "bayfront";
+  visual: "hallguard" | "homeops" | "oceanview";
+  accent: string;
   year: string;
   role: string;
   stack: string[];
@@ -28,6 +29,7 @@ export const projects: Project[] = [
     summary:
       "A capstone project built around two Raspberry Pi cameras, a trained detection model, and a cloud backend — designed, trained, and wired together end to end.",
     visual: "hallguard",
+    accent: "#b3552c",
     year: "2024–2025",
     role: "End-to-end technical implementation — hardware, computer vision, backend, and app",
     stack: [
@@ -124,6 +126,7 @@ export const projects: Project[] = [
     summary:
       "An ongoing self-hosted environment for learning infrastructure by actually operating a server, not just reading about one.",
     visual: "homeops",
+    accent: "#2f6f6b",
     year: "Ongoing",
     role: "Sole builder and operator",
     stack: [
@@ -204,15 +207,16 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "bayfront",
+    slug: "ocean-view-resort",
     index: "03",
-    name: "Bayfront Resort Website",
+    name: "Ocean View Resort",
     tags: ["Web", "Design", "Business", "Digital Experience"],
     oneLiner:
       "A website for a newly acquired, family-owned resort — built to give a real business its first proper digital presence.",
     summary:
       "An ongoing project that shifted my focus from building technology for its own sake to building it for an actual business and its guests.",
-    visual: "bayfront",
+    visual: "oceanview",
+    accent: "#b3872e",
     year: "Ongoing",
     role: "Design, development, and business-facing decisions",
     stack: ["Responsive web development", "Visual design", "Information architecture", "Hosting & deployment"],
@@ -220,7 +224,7 @@ export const projects: Project[] = [
       {
         heading: "Overview",
         body: [
-          "Bayfront Resort is a real website project for a family-owned resort that was recently acquired by new owners. The site is meant to give the resort its first real digital presence — a place where potential guests can understand what it offers before they arrive.",
+          "Ocean View Resort is a real website project for a family-owned resort that was recently acquired by new owners. The site is meant to give the resort its first real digital presence — a place where potential guests can understand what it offers before they arrive.",
         ],
       },
       {

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 const links = [
   { label: "Email", value: "renieltejones@gmail.com", href: "https://mail.google.com/mail/?view=cm&fs=1&to=renieltejones@gmail.com" },
   { label: "GitHub", value: "github.com/b1gman16", href: "https://github.com/b1gman16" },
-  { label: "LinkedIn", value: "linkedin.com/in/renieltejones", href: "https://www.linkedin.com/in/reniel-tejones-292967244/" },
+  { label: "LinkedIn", value: "linkedin.com/in/reniel-tejones", href: "https://www.linkedin.com/in/reniel-tejones-292967244/" },
 ];
 
 export default function ContactPage() {

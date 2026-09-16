@@ -55,6 +55,31 @@ a {
   color: inherit;
 }
 
+@media (pointer: fine) {
+  html,
+  a,
+  button {
+    cursor: none;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 26s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -96,4 +121,67 @@ a {
 }
 .underline-grow:hover {
   background-size: 100% 1px;
+}
+
+/* Subtle tactile grain, used only on dark sections */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Rotated stamp-style badge, one deliberate flourish in the hero */
+.seal {
+  transform: rotate(-8deg);
+}
+
+/* Oversized ghost numeral behind case-study headers */
+.ghost-numeral {
+  font-family: var(--font-display);
+  font-style: italic;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-hairline);
+  user-select: none;
+}
+
+/* Duotone hover tint for project imagery, colored per project via --tint */
+.duotone {
+  position: relative;
+  isolation: isolate;
+}
+.duotone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--tint, var(--color-accent));
+  mix-blend-mode: color;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.group:hover .duotone::after {
+  opacity: 0.35;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }

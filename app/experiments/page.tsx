@@ -13,7 +13,8 @@ export default function ExperimentsPage() {
         Other work
       </h1>
       <p className="mt-6 max-w-lg text-mid">
-        Smaller builds and exercises.
+        Smaller builds and exercises — not every project needs a full case
+        study to be worth showing.
       </p>
 
       <div className="mt-16 flex flex-col md:mt-20">

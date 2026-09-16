@@ -1,6 +1,6 @@
-type Variant = "hallguard" | "homeops" | "bayfront";
+type Variant = "hallguard" | "homeops" | "oceanview";
 
-function HallGuardArt() {
+function HallGuardArt({ accent }: { accent: string }) {
   return (
     <svg viewBox="0 0 640 480" className="h-full w-full" role="img" aria-label="Diagram of HallGuard's dual-camera detection system">
       <rect x="0" y="0" width="640" height="480" fill="var(--color-dark)" />
@@ -18,12 +18,12 @@ function HallGuardArt() {
         <line key={`bar${i}`} x1={80 + i * 42} y1="330" x2={80 + i * 42} y2="380" stroke="#4a4d54" strokeWidth="3" />
       ))}
       {/* camera cones */}
-      <g fill="none" stroke="var(--color-accent)" strokeWidth="1.5" opacity="0.85">
+      <g fill="none" stroke={accent} strokeWidth="1.5" opacity="0.85">
         <path d="M120 90 L260 300 L60 300 Z" strokeDasharray="4 5" />
         <path d="M500 90 L560 300 L360 300 Z" strokeDasharray="4 5" />
       </g>
-      <circle cx="120" cy="90" r="7" fill="var(--color-accent)" />
-      <circle cx="500" cy="90" r="7" fill="var(--color-accent)" />
+      <circle cx="120" cy="90" r="7" fill={accent} />
+      <circle cx="500" cy="90" r="7" fill={accent} />
       {/* detection box */}
       <rect x="255" y="230" width="110" height="130" fill="none" stroke="#f2f1ec" strokeWidth="2" />
       <text x="255" y="222" fill="#f2f1ec" fontSize="14" fontFamily="var(--font-sans)">person · 0.94</text>
@@ -32,7 +32,7 @@ function HallGuardArt() {
   );
 }
 
-function HomeOpsArt() {
+function HomeOpsArt({ accent }: { accent: string }) {
   const rows = 6;
   const cols = 10;
   return (
@@ -50,7 +50,7 @@ function HomeOpsArt() {
                 width="44"
                 height="46"
                 rx="3"
-                fill={active ? "var(--color-accent)" : "#20222a"}
+                fill={active ? accent : "#20222a"}
                 opacity={active ? 0.85 : 1}
                 stroke="#33353a"
               />
@@ -62,13 +62,13 @@ function HomeOpsArt() {
         <text x="40" y="42">CPU 38%</text>
         <text x="220" y="42">MEM 61%</text>
         <text x="400" y="42">DISK 44%</text>
-        <text x="40" y="450" fill="var(--color-accent)">● 6 containers running</text>
+        <text x="40" y="450" fill={accent}>● 6 containers running</text>
       </g>
     </svg>
   );
 }
 
-function BayfrontArt() {
+function OceanViewArt({ accent }: { accent: string }) {
   return (
     <svg viewBox="0 0 640 480" className="h-full w-full" role="img" aria-label="Line illustration of the Ocean View Resort site layout">
       <rect x="0" y="0" width="640" height="480" fill="var(--color-paper-soft)" />
@@ -76,13 +76,13 @@ function BayfrontArt() {
       <path
         d="M0 300 C 80 270, 160 320, 240 290 S 400 260, 480 295 S 600 275, 640 300"
         fill="none"
-        stroke="var(--color-accent)"
+        stroke={accent}
         strokeWidth="2"
       />
       <path
         d="M0 320 C 90 300, 170 340, 260 315 S 420 290, 500 320 S 610 300, 640 320"
         fill="none"
-        stroke="var(--color-accent)"
+        stroke={accent}
         strokeWidth="1"
         opacity="0.5"
       />
@@ -102,9 +102,14 @@ function BayfrontArt() {
   );
 }
 
-export default function ProjectVisual({ variant }: { variant: Variant }) {
-  if (variant === "hallguard") return <HallGuardArt />;
-  if (variant === "homeops") return <HomeOpsArt />;
-  if (variant === "bayfront") return <BayfrontArt />;
-  return <BayfrontArt />;
+export default function ProjectVisual({
+  variant,
+  accent = "#2f6f6b",
+}: {
+  variant: Variant;
+  accent?: string;
+}) {
+  if (variant === "hallguard") return <HallGuardArt accent={accent} />;
+  if (variant === "homeops") return <HomeOpsArt accent={accent} />;
+  return <OceanViewArt accent={accent} />;
 }

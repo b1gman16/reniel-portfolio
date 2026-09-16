@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import type { ComponentProps } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
 import ProjectVisual from "@/components/ProjectVisual";
 import Reveal from "@/components/Reveal";
+import TagList from "@/components/TagList";
+import RevealClip from "@/components/RevealClip";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -39,20 +40,25 @@ export default async function CaseStudyPage({
   return (
     <article>
       {/* HEADER */}
-      <div className="mx-auto max-w-6xl px-6 pt-16 pb-10 md:px-10 md:pt-24 md:pb-16">
+      <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-10 md:px-10 md:pt-24 md:pb-16">
+        <span
+          className="ghost-numeral pointer-events-none absolute -top-4 right-4 hidden select-none text-[13rem] md:top-0 md:block md:text-[16rem]"
+          aria-hidden
+        >
+          {project.index}
+        </span>
+
         <Link href="/work" className="underline-grow pb-1 text-sm text-mid">
           ← All work
         </Link>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-12 md:gap-10">
+        <div className="relative mt-10 grid gap-8 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-8">
             <span className="text-sm text-faint">{project.index}</span>
             <h1 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">
               {project.name}
             </h1>
-            <p className="mt-5 text-sm uppercase tracking-wide text-accent">
-              {project.tags.join(" · ")}
-            </p>
+            <TagList tags={project.tags} accent={project.accent} className="mt-5" />
             <p className="mt-6 max-w-lg text-lg text-mid">{project.oneLiner}</p>
           </div>
           <div className="flex flex-col justify-end gap-4 text-sm md:col-span-4">
@@ -74,13 +80,11 @@ export default async function CaseStudyPage({
 
       {/* HERO IMAGE */}
       <div className="mx-auto max-w-6xl px-6 md:px-10">
-        <div className="aspect-video w-full overflow-hidden">
-          <ProjectVisual
-            variant={
-              project.visual as unknown as ComponentProps<typeof ProjectVisual>["variant"]
-            }
-          />
-        </div>
+        <RevealClip className="aspect-[16/9] w-full overflow-hidden">
+          <div data-cursor={project.name} className="h-full w-full">
+            <ProjectVisual variant={project.visual} accent={project.accent} />
+          </div>
+        </RevealClip>
       </div>
 
       {/* SECTIONS */}
@@ -88,7 +92,10 @@ export default async function CaseStudyPage({
         <div className="flex flex-col gap-16 md:gap-20">
           {project.sections.map((section) => (
             <Reveal key={section.heading}>
-              <div className="grid gap-4 border-t hairline pt-8 md:grid-cols-12 md:gap-10">
+              <div
+                className="grid gap-4 border-t-2 pt-8 md:grid-cols-12 md:gap-10"
+                style={{ borderColor: project.accent }}
+              >
                 <h2 className="font-display text-2xl md:col-span-4 md:text-3xl">
                   {section.heading}
                 </h2>

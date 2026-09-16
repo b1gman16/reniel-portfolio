@@ -3,6 +3,9 @@ import { Fraunces, Work_Sans } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Cursor from "@/components/Cursor";
+import SmoothScroll from "@/components/SmoothScroll";
+import PageTransition from "@/components/PageTransition";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -38,8 +41,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fraunces.variable} ${workSans.variable} antialiased`}>
+        <SmoothScroll />
+        <Cursor />
         <Nav />
-        <main>{children}</main>
+        <main>
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
       </body>
     </html>
