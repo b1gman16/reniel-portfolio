@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --color-paper: #f7f6f2;
+  --color-paper-soft: #efeee8;
+  --color-ink: #16171a;
+  --color-mid: #6c6e73;
+  --color-faint: #97999d;
+  --color-hairline: #dedcd3;
+  --color-hairline-dark: #33353a;
+  --color-accent: #2f6f6b;
+  --color-accent-soft: #e3ebe9;
+  --color-dark: #14151a;
+  --color-dark-soft: #1d1f24;
+}
+
+@theme inline {
+  --color-paper: var(--color-paper);
+  --color-paper-soft: var(--color-paper-soft);
+  --color-ink: var(--color-ink);
+  --color-mid: var(--color-mid);
+  --color-faint: var(--color-faint);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-dark: var(--color-hairline-dark);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-dark: var(--color-dark);
+  --color-dark-soft: var(--color-dark-soft);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-work-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Reveal-on-scroll primitive, used sparingly */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hairline {
+  border-color: var(--color-hairline);
+}
+
+.underline-grow {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.35s ease;
+}
+.underline-grow:hover {
+  background-size: 100% 1px;
+}
