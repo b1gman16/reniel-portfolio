@@ -10,7 +10,7 @@ export type Project = {
   tags: string[];
   oneLiner: string;
   summary: string;
-  visual: "hallguard" | "homeops" | "oceanview";
+  visual: "hallguard" | "homeops" | "bayfront";
   accent: string;
   year: string;
   role: string;
@@ -207,15 +207,15 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "ocean-view-resort",
+    slug: "bayfront-resort",
     index: "03",
-    name: "Ocean View Resort",
+    name: "Bayfront Resort",
     tags: ["Web", "Design", "Business", "Digital Experience"],
     oneLiner:
       "A website for a newly acquired, family-owned resort — built to give a real business its first proper digital presence.",
     summary:
       "An ongoing project that shifted my focus from building technology for its own sake to building it for an actual business and its guests.",
-    visual: "oceanview",
+    visual: "bayfront",
     accent: "#b3872e",
     year: "Ongoing",
     role: "Design, development, and business-facing decisions",
@@ -224,7 +224,7 @@ export const projects: Project[] = [
       {
         heading: "Overview",
         body: [
-          "Ocean View Resort is a real website project for a family-owned resort that was recently acquired by new owners. The site is meant to give the resort its first real digital presence — a place where potential guests can understand what it offers before they arrive.",
+          "Bayfront Resort is a real website project for a family-owned resort that was recently acquired by new owners. The site is meant to give the resort its first real digital presence — a place where potential guests can understand what it offers before they arrive.",
         ],
       },
       {

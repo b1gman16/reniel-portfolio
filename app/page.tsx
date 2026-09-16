@@ -154,7 +154,7 @@ export default function Home() {
           <p className="mt-4 max-w-lg text-white/60">
             Different projects, same underlying process. HallGuard meant
             connecting hardware, computer vision, and cloud services. HomeOps
-            means combining Linux, networking, and containers. Ocean View
+            means combining Linux, networking, and containers. Bayfront
             Resort means connecting design, development, and what an actual
             business needs.
           </p>

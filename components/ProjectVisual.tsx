@@ -1,4 +1,4 @@
-type Variant = "hallguard" | "homeops" | "oceanview";
+type Variant = "hallguard" | "homeops" | "bayfront";
 
 function HallGuardArt({ accent }: { accent: string }) {
   return (
@@ -68,9 +68,9 @@ function HomeOpsArt({ accent }: { accent: string }) {
   );
 }
 
-function OceanViewArt({ accent }: { accent: string }) {
+function BayfrontArt({ accent }: { accent: string }) {
   return (
-    <svg viewBox="0 0 640 480" className="h-full w-full" role="img" aria-label="Line illustration of the Ocean View Resort site layout">
+    <svg viewBox="0 0 640 480" className="h-full w-full" role="img" aria-label="Line illustration of the Bayfront Resort site layout">
       <rect x="0" y="0" width="640" height="480" fill="var(--color-paper-soft)" />
       <line x1="0" y1="300" x2="640" y2="300" stroke="var(--color-hairline)" strokeWidth="2" />
       <path
@@ -111,5 +111,5 @@ export default function ProjectVisual({
 }) {
   if (variant === "hallguard") return <HallGuardArt accent={accent} />;
   if (variant === "homeops") return <HomeOpsArt accent={accent} />;
-  return <OceanViewArt accent={accent} />;
+  return <BayfrontArt accent={accent} />;
 }
