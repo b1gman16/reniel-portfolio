@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/projects";
 import ProjectVisual from "@/components/ProjectVisual";
 import TagList from "@/components/TagList";
@@ -19,6 +24,42 @@ export default function ProjectRow({
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 260, damping: 22, mass: 0.4 });
   const springY = useSpring(y, { stiffness: 260, damping: 22, mass: 0.4 });
+  const imageRef = useRef<HTMLDivElement>(null);
+  const [imageVisible, setImageVisible] = useState(false);
+
+  useEffect(() => {
+    const element = imageRef.current;
+    if (!element) return;
+
+    const revealIfVisible = () => {
+      const { top, bottom } = element.getBoundingClientRect();
+      if (top < window.innerHeight + 120 && bottom > 0) {
+        setImageVisible(true);
+        observer.disconnect();
+        window.removeEventListener("scroll", revealIfVisible);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setImageVisible(true);
+          observer.disconnect();
+          window.removeEventListener("scroll", revealIfVisible);
+        }
+      },
+      { threshold: 0.01, rootMargin: "0px 0px 120px 0px" }
+    );
+
+    observer.observe(element);
+    window.addEventListener("scroll", revealIfVisible, { passive: true });
+    revealIfVisible();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", revealIfVisible);
+    };
+  }, []);
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -40,11 +81,13 @@ export default function ProjectRow({
         data-cursor="View"
       >
         <motion.div
+          ref={imageRef}
           className="aspect-[4/3] w-full"
-          initial={{ clipPath: "inset(0 0 100% 0)" }}
-          whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          animate={{
+            clipPath: imageVisible ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
+          }}
+          transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }}
+          style={{ willChange: "clip-path" }}
         >
           <motion.div
             className="h-full w-full transition-transform duration-500 group-hover:scale-[1.03]"

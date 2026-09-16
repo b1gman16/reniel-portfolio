@@ -1,4 +1,10 @@
+"use client";
+
 import Link from "next/link";
+
+function handleBackToTop() {
+  window.dispatchEvent(new Event("portfolio-scroll-to-top"));
+}
 
 export default function Footer() {
   return (
@@ -13,12 +19,12 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-mid">
-          <a className="underline-grow pb-1" href="mailto:hello@renieltejones.dev">
+          <a className="underline-grow pb-1" href="https://mail.google.com/mail/?view=cm&fs=1&to=renieltejones@gmail.com">
             Email
           </a>
           <a
             className="underline-grow pb-1"
-            href="https://github.com/"
+            href="https://github.com/b1gman16"
             target="_blank"
             rel="noreferrer"
           >
@@ -26,7 +32,7 @@ export default function Footer() {
           </a>
           <a
             className="underline-grow pb-1"
-            href="https://www.linkedin.com/"
+            href="https://www.linkedin.com/in/reniel-tejones-292967244/"
             target="_blank"
             rel="noreferrer"
           >
@@ -37,7 +43,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 pb-8 text-xs text-faint md:flex-row md:justify-between md:px-10">
         <p>Reniel Tejones — Computer Engineering, Philippines</p>
         <p>
-          <Link href="/" className="underline-grow pb-1">
+          <Link href="/" className="underline-grow pb-1" onClick={handleBackToTop}>
             Back to top
           </Link>
         </p>
