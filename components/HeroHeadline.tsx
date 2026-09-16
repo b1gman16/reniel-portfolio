@@ -32,9 +32,9 @@ export default function HeroHeadline({
       className={className}
     >
       {lines.map((line, li) => (
-        <span key={li} className="block overflow-hidden">
+        <span key={li} className="block overflow-hidden [overflow-clip-margin:0.1em]">
           {line.split(" ").map((w, wi) => (
-            <span key={wi} className="mr-[0.28em] inline-block overflow-hidden last:mr-0">
+            <span key={wi} className="mr-[0.28em] inline-block overflow-hidden [overflow-clip-margin:0.1em] last:mr-0">
               <motion.span variants={word} className="inline-block">
                 {w}
               </motion.span>
