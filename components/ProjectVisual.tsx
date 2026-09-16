@@ -1,4 +1,4 @@
-type Variant = "hallguard" | "homeops" | "oceanview";
+type Variant = "hallguard" | "homeops" | "bayfront";
 
 function HallGuardArt() {
   return (
@@ -68,7 +68,7 @@ function HomeOpsArt() {
   );
 }
 
-function OceanViewArt() {
+function BayfrontArt() {
   return (
     <svg viewBox="0 0 640 480" className="h-full w-full" role="img" aria-label="Line illustration of the Ocean View Resort site layout">
       <rect x="0" y="0" width="640" height="480" fill="var(--color-paper-soft)" />
@@ -105,5 +105,6 @@ function OceanViewArt() {
 export default function ProjectVisual({ variant }: { variant: Variant }) {
   if (variant === "hallguard") return <HallGuardArt />;
   if (variant === "homeops") return <HomeOpsArt />;
-  return <OceanViewArt />;
+  if (variant === "bayfront") return <BayfrontArt />;
+  return <BayfrontArt />;
 }
