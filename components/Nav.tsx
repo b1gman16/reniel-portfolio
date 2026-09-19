@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Mark from "@/components/Mark";
 
 const links = [
   { href: "/work", label: "Work" },
@@ -14,17 +15,17 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b hairline bg-paper/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b hairline bg-bg/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-display text-lg tracking-tight text-ink"
+          className="flex items-center gap-2.5"
           onClick={() => setOpen(false)}
         >
-          <span className="flex h-6 w-6 items-center justify-center border border-ink text-xs not-italic">
-            R
+          <Mark className="h-4 w-4 text-mid" />
+          <span className="chrome-text font-display text-xl italic tracking-tight">
+            RENIEL
           </span>
-          Reniel Tejones
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm text-mid md:flex">

@@ -1,12 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import type { Project } from "@/data/projects";
 import ProjectVisual from "@/components/ProjectVisual";
 import TagList from "@/components/TagList";
@@ -24,42 +19,6 @@ export default function ProjectRow({
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 260, damping: 22, mass: 0.4 });
   const springY = useSpring(y, { stiffness: 260, damping: 22, mass: 0.4 });
-  const imageRef = useRef<HTMLDivElement>(null);
-  const [imageVisible, setImageVisible] = useState(false);
-
-  useEffect(() => {
-    const element = imageRef.current;
-    if (!element) return;
-
-    const revealIfVisible = () => {
-      const { top, bottom } = element.getBoundingClientRect();
-      if (top < window.innerHeight + 120 && bottom > 0) {
-        setImageVisible(true);
-        observer.disconnect();
-        window.removeEventListener("scroll", revealIfVisible);
-      }
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setImageVisible(true);
-          observer.disconnect();
-          window.removeEventListener("scroll", revealIfVisible);
-        }
-      },
-      { threshold: 0.01, rootMargin: "0px 0px 120px 0px" }
-    );
-
-    observer.observe(element);
-    window.addEventListener("scroll", revealIfVisible, { passive: true });
-    revealIfVisible();
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", revealIfVisible);
-    };
-  }, []);
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -81,13 +40,11 @@ export default function ProjectRow({
         data-cursor="View"
       >
         <motion.div
-          ref={imageRef}
           className="aspect-[4/3] w-full"
-          animate={{
-            clipPath: imageVisible ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
-          }}
-          transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }}
-          style={{ willChange: "clip-path" }}
+          initial={{ clipPath: "inset(0 0 100% 0)" }}
+          whileInView={{ clipPath: "inset(0 0 0% 0)" }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.div
             className="h-full w-full transition-transform duration-500 group-hover:scale-[1.03]"
@@ -102,7 +59,7 @@ export default function ProjectRow({
 
         {/* cursor-following badge, desktop only */}
         <motion.div
-          className="pointer-events-none absolute left-0 top-0 hidden h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-paper text-center text-[10px] font-medium uppercase tracking-wide text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:flex"
+          className="pointer-events-none absolute left-0 top-0 hidden h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-center text-[10px] font-medium uppercase tracking-wide text-ink-inverse opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:flex"
           style={{ x: springX, y: springY }}
         >
           View
@@ -111,7 +68,7 @@ export default function ProjectRow({
 
       <div className={`md:col-span-5 ${reverse ? "md:order-1" : ""}`}>
         <span className="text-sm text-faint">{project.index}</span>
-        <h3 className="mt-3 font-display text-3xl leading-tight md:text-4xl">
+        <h3 className="mt-3 font-display text-3xl italic leading-tight md:text-4xl">
           {project.name}
         </h3>
         <TagList tags={project.tags} accent={project.accent} className="mt-4" />

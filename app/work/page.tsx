@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 pt-16 pb-24 md:px-10 md:pt-24 md:pb-32">
-      <h1 className="max-w-2xl font-display text-5xl leading-[1.05] md:text-6xl">
+      <h1 className="max-w-2xl font-display text-5xl italic leading-[1.05] md:text-6xl">
         Selected work
       </h1>
       <p className="mt-6 max-w-lg text-mid">

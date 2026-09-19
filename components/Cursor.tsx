@@ -1,15 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function Cursor() {
-  const pathname = usePathname();
-
-  return <CursorContent key={pathname} />;
-}
-
-function CursorContent() {
   const ringRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const [enabled, setEnabled] = useState(false);
@@ -79,18 +72,18 @@ function CursorContent() {
     <>
       <div
         ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-100 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
+        className="pointer-events-none fixed left-0 top-0 z-[100] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
         style={{ willChange: "transform" }}
       />
       <div
         ref={ringRef}
-        className={`pointer-events-none fixed left-0 top-0 z-100 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink/70 transition-[width,height,background-color,border-color] duration-200 ${
+        className={`pointer-events-none fixed left-0 top-0 z-[100] -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink/70 transition-[width,height,background-color,border-color] duration-200 ${
           active ? "h-20 w-20 border-transparent bg-ink" : "h-9 w-9"
         }`}
         style={{ willChange: "transform" }}
       >
         {label && (
-          <span className="flex h-full w-full items-center justify-center text-center text-[11px] font-medium leading-tight text-paper">
+          <span className="flex h-full w-full items-center justify-center text-center text-[11px] font-medium leading-tight text-bg">
             {label}
           </span>
         )}

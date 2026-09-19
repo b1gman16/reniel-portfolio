@@ -10,8 +10,9 @@ export type Project = {
   tags: string[];
   oneLiner: string;
   summary: string;
-  visual: "hallguard" | "homeops" | "bayfront";
+  visual: "hallguard" | "homeops" | "oceanview";
   accent: string;
+  light?: boolean;
   year: string;
   role: string;
   stack: string[];
@@ -29,7 +30,7 @@ export const projects: Project[] = [
     summary:
       "A capstone project built around two Raspberry Pi cameras, a trained detection model, and a cloud backend — designed, trained, and wired together end to end.",
     visual: "hallguard",
-    accent: "#b3552c",
+    accent: "#7a2e22",
     year: "2024–2025",
     role: "End-to-end technical implementation — hardware, computer vision, backend, and app",
     stack: [
@@ -56,7 +57,7 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "The Problem",
+        heading: "Problem",
         body: [
           "Unsafe railing behavior is brief and easy to miss. A system meant to catch it needed to run continuously on modest hardware, tell the difference between normal and risky behavior across two camera angles, and get a useful alert to someone who could respond — without flooding them with false positives.",
         ],
@@ -83,7 +84,7 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "Building",
+        heading: "Build",
         body: [
           "On the hardware side, I set up the Raspberry Pi 5 with two camera modules and got both streams running reliably in parallel. I collected and annotated the training dataset in CVAT, then trained and evaluated the YOLOv8n model against our safety-relevant classes.",
           "On the software side, I built the detection pipeline — region-of-interest filtering, temporal smoothing, multi-camera fusion — and the backend logic that turns a confirmed detection into an event. Firestore stores event metadata and device state; Firebase Cloud Messaging pushes notifications out. I also built the mobile app's monitoring, device-status, and event-history features, plus a local audio alarm for on-site response, and wired every one of these pieces into a single working system.",
@@ -103,13 +104,13 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "What I Learned",
+        heading: "Learned",
         body: [
           "HallGuard was the project that forced me to operate across hardware, computer vision, backend, cloud services, and an application at the same time, and to understand how a weak link in any one of them breaks the whole system. It also taught me how much of building something reliable is about reducing noise — in the model's predictions, in the sensor setup, in what actually gets escalated to a person.",
         ],
       },
       {
-        heading: "Next Steps",
+        heading: "Next",
         body: [
           "I'd like to expand the dataset to cover more railing types and lighting conditions, explore on-device model optimization to reduce latency further, and add configurable sensitivity so different locations can be tuned without retraining the model.",
         ],
@@ -126,7 +127,7 @@ export const projects: Project[] = [
     summary:
       "An ongoing self-hosted environment for learning infrastructure by actually operating a server, not just reading about one.",
     visual: "homeops",
-    accent: "#2f6f6b",
+    accent: "#5c6b52",
     year: "Ongoing",
     role: "Sole builder and operator",
     stack: [
@@ -151,7 +152,7 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "The Problem",
+        heading: "Problem",
         body: [
           "Infrastructure concepts are easy to read about and easy to forget without hands-on repetition. I needed an environment where I'd have to keep something running over time, which surfaces problems that a one-off setup never does.",
         ],
@@ -175,7 +176,7 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "Building",
+        heading: "Build",
         body: [
           "I installed and configured Ubuntu Server on the repurposed PC, set up SSH access, and moved services into Docker containers managed through Docker Compose. I connected the machine to my Tailscale network for remote administration, set up Crafty Controller to manage the Minecraft server, and built a FastAPI-based web dashboard that reports CPU usage, CPU temperature, RAM, storage, overall server status, and the status of individual containers.",
         ],
@@ -193,13 +194,13 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "What I Learned",
+        heading: "Learned",
         body: [
           "Running a server long-term teaches things a semester project can't — how services actually fail, how to reason about resource limits on modest hardware, and how to build monitoring that answers 'is everything okay' quickly rather than burying that answer in raw metrics.",
         ],
       },
       {
-        heading: "Next Steps",
+        heading: "Next",
         body: [
           "I'm planning to add automated backups for the containers I care about most, look into basic alerting when something goes down, and keep expanding the dashboard as I add more services.",
         ],
@@ -207,16 +208,17 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "bayfront-resort",
+    slug: "ocean-view-resort",
     index: "03",
-    name: "Bayfront Resort",
+    name: "Ocean View Resort",
     tags: ["Web", "Design", "Business", "Digital Experience"],
     oneLiner:
       "A website for a newly acquired, family-owned resort — built to give a real business its first proper digital presence.",
     summary:
       "An ongoing project that shifted my focus from building technology for its own sake to building it for an actual business and its guests.",
-    visual: "bayfront",
-    accent: "#b3872e",
+    visual: "oceanview",
+    accent: "#b7a26a",
+    light: true,
     year: "Ongoing",
     role: "Design, development, and business-facing decisions",
     stack: ["Responsive web development", "Visual design", "Information architecture", "Hosting & deployment"],
@@ -224,7 +226,7 @@ export const projects: Project[] = [
       {
         heading: "Overview",
         body: [
-          "Bayfront Resort is a real website project for a family-owned resort that was recently acquired by new owners. The site is meant to give the resort its first real digital presence — a place where potential guests can understand what it offers before they arrive.",
+          "Ocean View Resort is a real website project for a family-owned resort that was recently acquired by new owners. The site is meant to give the resort its first real digital presence — a place where potential guests can understand what it offers before they arrive.",
         ],
       },
       {
@@ -234,7 +236,7 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "The Problem",
+        heading: "Problem",
         body: [
           "The resort needed a professional digital presence that communicates its identity, its facilities, its location, and its value to potential guests — and that could eventually support real business needs like inquiries, and later, bookings and payments.",
         ],
@@ -258,7 +260,7 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "Building",
+        heading: "Build",
         body: [
           "I'm building a responsive site that presents the resort's facilities, location, and character clearly, with an emphasis on the resort's own identity rather than a generic template feel. This includes the visual direction, the page structure, the responsive layout work, and getting it properly hosted and deployed.",
         ],
@@ -276,13 +278,13 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "What I Learned",
+        heading: "Learned",
         body: [
           "This project is where building technology started to feel connected to an actual outcome for someone else's business, rather than a self-contained technical exercise. It's pushed me to think about design and development decisions in terms of what a real visitor and a real owner both need, not just what's technically interesting to build.",
         ],
       },
       {
-        heading: "Next Steps",
+        heading: "Next",
         body: [
           "Next is building out inquiry handling, then planning the path toward online booking and payments as the resort's needs grow.",
         ],

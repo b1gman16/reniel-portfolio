@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { projects } from "@/data/projects";
-import ProjectRow from "@/components/ProjectRow";
-import HeroHeadline from "@/components/HeroHeadline";
-import Marquee from "@/components/Marquee";
+import ProjectSpread from "@/components/ProjectSpread";
 import Magnetic from "@/components/Magnetic";
-import StaggerIn from "@/components/StaggerIn";
 import ProcessList from "@/components/ProcessList";
+import Annotation from "@/components/Annotation";
+import CatMark from "@/components/CatMark";
+import Mark from "@/components/Mark";
 
 const process = [
   {
@@ -41,120 +41,106 @@ const exploring = [
     body: "Becoming increasingly interested in building websites for real businesses, not just for demonstration.",
   },
   {
-    name: "Branding & digital experiences",
-    body: "Exploring how visual identity, design, UX, and a website work together as one experience.",
+    name: "Digital design",
+    body: "Exploring how visual identity, UX, and a website work together as one experience.",
   },
   {
-    name: "Systems & infrastructure",
-    body: "Continuing to explore Linux, networking, Docker, and servers through HomeOps.",
+    name: "Systems",
+    body: "Continuing to learn Linux, networking, Docker, and infrastructure through HomeOps.",
   },
   {
-    name: "Building for real problems",
-    body: "Drawn to projects where technology is a tool for solving something practical, not the goal itself.",
+    name: "Building",
+    body: "Continuing to develop the ability to take ideas and turn them into working systems.",
   },
 ];
 
 export default function Home() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative mx-auto max-w-6xl overflow-hidden px-6 pt-20 pb-16 md:px-10 md:pt-28">
-        <StaggerIn>
-          <p className="text-sm text-mid">Computer Engineering · Philippines</p>
-        </StaggerIn>
-
-        <HeroHeadline
-          lines={["I build things", "from ideas."]}
-          className="mt-6 max-w-5xl font-display text-[15vw] leading-[0.92] tracking-tight text-ink sm:text-8xl md:text-[7.5rem]"
-        />
-
-        <div className="mt-10 grid gap-8 md:grid-cols-12 md:items-end">
-          <StaggerIn delay={520} className="md:col-span-7">
-            <p className="max-w-xl text-lg leading-relaxed text-mid">
-              Computer Engineering graduate exploring the space between
-              technology, design, and business — from intelligent systems
-              and infrastructure to websites and digital experiences.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 text-sm">
-              <Magnetic>
-                <Link
-                  href="/work"
-                  data-cursor="Go"
-                  className="inline-block border border-ink px-6 py-3 transition-colors hover:bg-ink hover:text-paper"
-                >
-                  View selected work
-                </Link>
-              </Magnetic>
-              <Link href="/about" className="underline-grow pb-1">
-                About me
-              </Link>
-            </div>
-          </StaggerIn>
-
-          <StaggerIn delay={600} className="md:col-span-5 md:justify-self-end">
-            <div className="seal flex h-28 w-28 flex-col items-center justify-center border border-ink text-center md:h-32 md:w-32">
-              <span className="font-display text-xs italic leading-tight text-mid">
-                built,
-                <br />
-                not just
-                <br />
-                imagined
-              </span>
-            </div>
-          </StaggerIn>
-        </div>
-      </section>
-
-      <div className="mt-16 md:mt-20">
-        <Marquee
-          items={[
-            "Computer Vision",
-            "Embedded Systems",
-            "Infrastructure",
-            "Web & Design",
-            "Business",
-          ]}
-        />
-      </div>
-
-      {/* SELECTED WORK */}
-      <section className="border-b hairline">
-        <div className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
-          <div className="flex items-end justify-between">
-            <h2 className="font-display text-3xl md:text-4xl">Selected work</h2>
-            <Link href="/work" className="hidden underline-grow pb-1 text-sm text-mid md:block">
-              All work
-            </Link>
+      {/* POSTER-WALL HERO */}
+      <section className="grain grid grid-cols-12 gap-px bg-hairline">
+        {/* headline cell */}
+        <div className="col-span-12 flex min-h-[62vh] flex-col justify-between bg-bg p-6 md:col-span-7 md:min-h-[74vh] md:p-10">
+          <div className="flex items-start justify-between text-xs tracking-[0.16em] text-mid">
+            <span>COMPUTER ENGINEERING · CEBU, PHILIPPINES</span>
+            <Mark className="h-5 w-5 text-mid" />
           </div>
+          <h1 className="font-display text-[16vw] italic uppercase leading-[0.86] tracking-tight text-ink sm:text-[8.5vw] md:text-[6.2vw]">
+            I build
+            <br />
+            things
+            <br />
+            from ideas.
+          </h1>
+        </div>
 
-          <div className="mt-14 flex flex-col gap-24 md:mt-20 md:gap-32">
-            {projects.map((project, i) => (
-              <ProjectRow
-                key={project.slug}
-                project={project}
-                reverse={i % 2 === 1}
-                description={project.oneLiner}
-              />
+        {/* scattered metadata cell */}
+        <div className="relative col-span-12 flex min-h-[36vh] flex-col justify-between bg-bg p-6 md:col-span-5 md:min-h-[74vh] md:p-10">
+          <span className="self-end font-display text-2xl italic text-faint">2026</span>
+          <div className="flex flex-col gap-1 text-xs tracking-[0.16em] text-mid">
+            {["TECHNOLOGY", "DESIGN", "SYSTEMS", "BUSINESS"].map((w) => (
+              <span key={w}>{w}</span>
             ))}
           </div>
+          <p className="max-w-xs text-mid">
+            Still figuring out where they intersect.
+          </p>
+        </div>
 
-          <Link
-            href="/work"
-            className="mt-16 inline-block underline-grow pb-1 text-sm text-mid md:hidden"
-          >
-            All work
+        {/* CTA cell */}
+        <div className="col-span-12 flex flex-wrap items-center gap-x-8 gap-y-4 bg-bg p-6 text-sm md:col-span-5 md:p-10">
+          <Magnetic>
+            <Link
+              href="/work"
+              data-cursor="Go"
+              className="inline-block border border-ink px-6 py-3 transition-colors hover:bg-ink hover:text-bg"
+            >
+              View selected work
+            </Link>
+          </Magnetic>
+          <Link href="/about" className="underline-grow pb-1">
+            About me
           </Link>
+        </div>
+
+        {/* vertical label cell */}
+        <div className="col-span-4 hidden items-center justify-center bg-bg p-6 md:col-span-2 md:flex">
+          <span className="label-vertical">STILL BUILDING</span>
+        </div>
+
+        {/* annotation cell */}
+        <div className="col-span-8 flex items-center bg-bg p-6 md:col-span-5 md:p-10">
+          <Annotation rotate={-3} className="text-2xl">
+            not finished, building
+          </Annotation>
         </div>
       </section>
 
-      {/* HOW I BUILD */}
-      <section className="grain border-b hairline bg-dark text-paper">
+      {/* SELECTED WORK — full-bleed spreads */}
+      <section id="work">
+        {projects.map((project, i) => (
+          <ProjectSpread
+            key={project.slug}
+            project={project}
+            index={i}
+            total={projects.length}
+            size="tall"
+            halftone={project.slug === "hallguard"}
+          />
+        ))}
+      </section>
+
+      {/* HOW I BUILD — the one light-contrast band */}
+      <section className="border-b hairline-inverse bg-surface text-ink-inverse">
         <div className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
-          <h2 className="font-display text-3xl md:text-4xl">How I build</h2>
-          <p className="mt-4 max-w-lg text-white/60">
+          <div className="flex items-end justify-between">
+            <h2 className="font-display text-3xl italic md:text-4xl">How I build</h2>
+            <Mark className="h-6 w-6 text-mid-inverse" />
+          </div>
+          <p className="mt-4 max-w-lg text-mid-inverse">
             Different projects, same underlying process. HallGuard meant
             connecting hardware, computer vision, and cloud services. HomeOps
-            means combining Linux, networking, and containers. Bayfront
+            means combining Linux, networking, and containers. Ocean View
             Resort means connecting design, development, and what an actual
             business needs.
           </p>
@@ -164,29 +150,54 @@ export default function Home() {
       </section>
 
       {/* CURRENTLY EXPLORING */}
+      <section className="border-b hairline">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-12 md:px-10 md:py-28">
+          <div className="hidden md:col-span-2 md:flex md:items-start md:justify-center">
+            <span className="label-vertical">EXPLORING</span>
+          </div>
+          <div className="md:col-span-10">
+            <h2 className="font-display text-3xl italic md:text-4xl">Currently exploring</h2>
+            <p className="mt-4 max-w-lg text-mid">
+              Not a fixed career declaration — just where my attention is
+              heading right now.
+            </p>
+
+            <div className="mt-14 grid gap-10 border-t hairline pt-10 sm:grid-cols-2">
+              {exploring.map((e, i) => (
+                <div key={e.name} className="flex gap-4">
+                  <span
+                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{ background: projects[i % projects.length].accent }}
+                    aria-hidden
+                  />
+                  <div>
+                    <p className="font-display text-xl">{e.name}</p>
+                    <p className="mt-3 text-mid">{e.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BEYOND THE WORK — teaser */}
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
-          <h2 className="font-display text-3xl md:text-4xl">Currently exploring</h2>
-          <p className="mt-4 max-w-lg text-mid">
-            Not a fixed career declaration — just where my attention is
-            heading right now.
-          </p>
-
-          <div className="mt-14 grid gap-10 border-t hairline pt-10 sm:grid-cols-2 md:mt-16">
-            {exploring.map((e, i) => (
-              <div key={e.name} className="flex gap-4">
-                <span
-                  className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                  style={{ background: projects[i % projects.length].accent }}
-                  aria-hidden
-                />
-                <div>
-                  <p className="font-display text-xl">{e.name}</p>
-                  <p className="mt-3 text-mid">{e.body}</p>
-                </div>
-              </div>
+          <div className="flex items-end justify-between">
+            <h2 className="font-display text-3xl italic md:text-4xl">Beyond the work</h2>
+            <CatMark className="h-8 w-8 text-mid" />
+          </div>
+          <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t hairline pt-8">
+            {["Film", "Music", "Building", "Training", "Design", "Cats"].map((tag) => (
+              <span key={tag} className="font-display text-2xl italic text-mid md:text-3xl">
+                {tag}
+              </span>
             ))}
           </div>
+          <Link href="/about#beyond" className="mt-8 inline-block underline-grow pb-1 text-sm text-mid">
+            More about me
+          </Link>
         </div>
       </section>
     </>
