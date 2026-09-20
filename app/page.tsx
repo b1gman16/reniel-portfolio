@@ -62,8 +62,16 @@ export default function Home() {
       {/* ============================================================
           HERO
       ============================================================ */}
-
-      <section className="grain site-grid">
+      <section className="hero-section site-grid">
+        <div className="hero-atmosphere" aria-hidden="true">
+          <div className="hero-ghost-number">01</div>
+          <div className="hero-orbit hero-orbit-one" />
+          <div className="hero-orbit hero-orbit-two" />
+          <div className="hero-crosshair" />
+          <div className="hero-light" />
+          <div className="hero-lines" />
+          <div className="hero-noise" />
+        </div>
         {/* NAME */}
 
         <div className="grid-cell col-span-12 min-h-[22vh] p-5 sm:p-8 md:col-span-7 md:min-h-[32vh] md:p-10">
@@ -121,7 +129,6 @@ export default function Home() {
         </div>
 
         {/* HERO FOOTER */}
-
         <div className="grid-cell col-span-12 flex flex-wrap items-center justify-between gap-6 p-5 sm:p-8 md:col-span-7 md:p-10">
           <div className="flex flex-wrap gap-3">
             <Magnetic>
@@ -145,6 +152,41 @@ export default function Home() {
           <Annotation rotate={-4}>
             still figuring it out.
           </Annotation>
+        </div>
+
+        {/* HERO CAROUSEL */}
+        <div className="hero-carousel col-span-12 md:col-span-5">
+          <div className="hero-carousel-track">
+            <div className="hero-carousel-content">
+              <span>BUILD</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>DESIGN</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>SYSTEMS</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>ENGINEER</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>CREATE</span>
+              <span className="hero-carousel-symbol">✦</span>
+
+              {/* duplicate for seamless loop */}
+              <span>BUILD</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>DESIGN</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>SYSTEMS</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>ENGINEER</span>
+              <span className="hero-carousel-symbol">✦</span>
+              <span>CREATE</span>
+              <span className="hero-carousel-symbol">✦</span>
+            </div>
+          </div>
+
+          <div className="hero-carousel-caption">
+            <span>06 — CURRENTLY BUILDING</span>
+            <span>SCROLL / EXPLORE</span>
+          </div>
         </div>
 
         {/* META STRIP */}
