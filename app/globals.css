@@ -84,19 +84,56 @@ a {
   font-family: var(--font-grotesk);
 }
 
-/* --------------------------------------------------
+/* =========================================
    GRID
--------------------------------------------------- */
+========================================= */
 
 .site-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 1px;
+  position: relative;
   background: var(--line);
 }
 
 .grid-cell {
-  background: transparent;
+  position: relative;
+  background: rgba(11, 11, 11, 0.72);
+  min-width: 0;
+}
+
+/* Keep the grid lines visible while allowing
+   the interactive background to show through */
+.hero-section .grid-cell {
+  background: rgba(11, 11, 11, 0.48);
+}
+
+.hero-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Atmospheric layer stays BEHIND content */
+.hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Grid/content stays above atmosphere */
+.hero-section > .grid-cell,
+.hero-section > .hero-portrait,
+.hero-section > .hero-carousel {
+  position: relative;
+  z-index: 2;
+}
+
+/* Make the grid itself visible */
+.hero-section.site-grid {
+  background: var(--line);
 }
 
 /* --------------------------------------------------
@@ -400,396 +437,27 @@ a {
 }
 
 /* --------------------------------------------------
-   RESPONSIVE
+   HERO
 -------------------------------------------------- */
-
-@media (max-width: 768px) {
-  .display-xl {
-    font-size: clamp(4rem, 18vw, 7rem);
-  }
-
-  .display-lg {
-    font-size: clamp(3.5rem, 15vw, 6rem);
-  }
-
-  .label-vertical {
-    writing-mode: horizontal-tb;
-    transform: none;
-  }
-}
-
-/* --------------------------------------------------
-   REDUCED MOTION
--------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* --------------------------------------------------
-   FOCUS
--------------------------------------------------- */
-
-:focus-visible {
-  outline: 2px solid var(--white);
-  outline-offset: 4px;
-}
-
-/* --------------------------------------------------
-   HERO PORTRAIT
--------------------------------------------------- */
-
-.hero-portrait {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-  background: #151515;
-}
-
-.hero-portrait-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-
-  filter:
-    grayscale(100%)
-    contrast(1.15)
-    brightness(0.82);
-
-  transition:
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.8s ease;
-}
-
-.hero-portrait:hover .hero-portrait-image {
-  transform: scale(1.035);
-
-  filter:
-    grayscale(100%)
-    contrast(1.25)
-    brightness(0.9);
-}
-
-.hero-portrait::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.08),
-    transparent 40%,
-    rgba(0, 0, 0, 0.35)
-  );
-}
-
-.portrait-label {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  z-index: 2;
-
-  font-family: var(--font-archivo), sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
-  color: white;
-  text-transform: uppercase;
-}
-
-/* --------------------------------------------------
-   HERO CAROUSEL
--------------------------------------------------- */
-
-.hero-carousel {
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  background: var(--bg-elevated);
-  border-left: 1px solid var(--line);
-}
-
-.hero-carousel-track {
-  width: 100%;
-  overflow: hidden;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.hero-carousel-content {
-  display: flex;
-  width: max-content;
-  align-items: center;
-  gap: 1.25rem;
-
-  font-family: var(--font-times);
-  font-size: clamp(2rem, 3vw, 3.5rem);
-  line-height: 1;
-  white-space: nowrap;
-
-  animation: heroCarousel 22s linear infinite;
-}
-
-.hero-carousel-content span {
-  display: inline-block;
-}
-
-.hero-carousel-symbol {
-  font-family: var(--font-grotesk);
-  font-size: 0.7em;
-  color: var(--muted);
-}
-
-@keyframes heroCarousel {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.hero-carousel-caption {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-
-  padding: 0.8rem 1rem;
-
-  font-family: var(--font-grotesk);
-  font-size: 0.55rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-@media (max-width: 768px) {
-  .hero-carousel {
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-
-  .hero-carousel-content {
-    font-size: 2rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-carousel-content {
-    animation: none;
-  }
-}
-
-/* --------------------------------------------------
-   INTERACTIVE BACKGROUND
--------------------------------------------------- */
-
-.interactive-background {
-  position: fixed;
-  inset: 0;
-
-  z-index: 0;
-  pointer-events: none;
-
-  overflow: hidden;
-
-  --mouse-x: 50%;
-  --mouse-y: 50%;
-}
-
-/* Fine technical grid */
-
-.background-grid {
-  position: absolute;
-  inset: 0;
-
-  background-image:
-    linear-gradient(
-      rgba(255, 255, 255, 0.035) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.035) 1px,
-      transparent 1px
-    );
-
-  background-size: 80px 80px;
-
-  mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black 60%,
-    transparent 100%
-  );
-
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black 60%,
-    transparent 100%
-  );
-}
-
-/* Cursor-following light */
-
-.background-glow {
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(
-    circle 350px at var(--mouse-x) var(--mouse-y),
-    rgba(255, 255, 255, 0.09),
-    rgba(255, 255, 255, 0.025) 40%,
-    transparent 75%
-  );
-
-  transition: opacity 0.2s ease;
-}
-
-/* Large faint technical ring */
-
-.background-orbit {
-  position: absolute;
-
-  width: 70vw;
-  height: 70vw;
-
-  max-width: 1000px;
-  max-height: 1000px;
-
-  left: 50%;
-  top: 45%;
-
-  transform: translate(-50%, -50%);
-
-  border: 1px solid rgba(255, 255, 255, 0.025);
-
-  border-radius: 50%;
-
-  box-shadow:
-    0 0 0 80px rgba(255, 255, 255, 0.008),
-    0 0 0 160px rgba(255, 255, 255, 0.005);
-
-  animation: orbitFloat 18s ease-in-out infinite alternate;
-}
-
-.background-orbit::before,
-.background-orbit::after {
-  content: "";
-
-  position: absolute;
-  inset: 12%;
-
-  border: 1px solid rgba(255, 255, 255, 0.018);
-
-  border-radius: 50%;
-}
-
-.background-orbit::after {
-  inset: 25%;
-}
-
-/* Film grain */
-
-.background-noise {
-  position: absolute;
-  inset: -50%;
-
-  opacity: 0.035;
-
-  background-image:
-    repeating-radial-gradient(
-      circle at 0 0,
-      transparent 0,
-      rgba(255, 255, 255, 0.35) 1px,
-      transparent 2px
-    );
-
-  background-size: 5px 5px;
-
-  animation: noiseMove 0.25s steps(2) infinite;
-}
-
-/* --------------------------------------------------
-   BACKGROUND MOTION
--------------------------------------------------- */
-
-@keyframes orbitFloat {
-  0% {
-    transform: translate(-50%, -50%) rotate(-2deg) scale(1);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(2deg) scale(1.025);
-  }
-}
-
-@keyframes noiseMove {
-  0% {
-    transform: translate(0, 0);
-  }
-
-  25% {
-    transform: translate(2%, -1%);
-  }
-
-  50% {
-    transform: translate(-1%, 2%);
-  }
-
-  75% {
-    transform: translate(1%, 1%);
-  }
-
-  100% {
-    transform: translate(-2%, -1%);
-  }
-}
-
-/* ============================================================
-   HERO ATMOSPHERE
-============================================================ */
 
 .hero-section {
   position: relative;
   overflow: hidden;
   isolation: isolate;
 
-  background:
-    radial-gradient(
-      circle at 72% 25%,
-      rgba(164, 134, 82, 0.12),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 15% 75%,
-      rgba(255, 255, 255, 0.04),
-      transparent 40%
-    ),
-    #0b0b0b;
+  background: transparent;
 }
 
-/* The atmosphere sits INSIDE the hero */
+/*
+  The atmosphere is behind the content,
+  but above the hero's base background.
+*/
+
 .hero-atmosphere {
   position: absolute;
   inset: 0;
-  z-index: 1;
+
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
 
@@ -808,14 +476,24 @@ a {
       circle 300px at 52% 48%,
       rgba(255, 255, 255, 0.045),
       transparent 70%
-    ),
-    #0b0b0b;
+    );
 }
 
+/*
+  All actual hero content stays above
+  the atmosphere.
+*/
 
-/* ------------------------------------------------------------
+.hero-section > .grid-cell,
+.hero-section > .hero-portrait,
+.hero-section > .hero-carousel {
+  position: relative;
+  z-index: 2;
+}
+
+/* --------------------------------------------------
    GIANT GHOST NUMBER
------------------------------------------------------------- */
+-------------------------------------------------- */
 
 .hero-ghost-number {
   position: absolute;
@@ -830,15 +508,17 @@ a {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.075);
 
   transform: rotate(-8deg);
+
   user-select: none;
 }
 
-/* ------------------------------------------------------------
+/* --------------------------------------------------
    ORBITAL RINGS
------------------------------------------------------------- */
+-------------------------------------------------- */
 
 .hero-orbit {
   position: absolute;
+
   left: 70%;
   top: 35%;
 
@@ -846,6 +526,13 @@ a {
   border-radius: 50%;
 
   transform: translate(-50%, -50%);
+}
+
+.hero-orbit-one {
+  width: 48vw;
+  height: 48vw;
+
+  animation: heroOrbitOne 18s ease-in-out infinite alternate;
 }
 
 .hero-orbit-two {
@@ -877,9 +564,9 @@ a {
   }
 }
 
-/* ------------------------------------------------------------
+/* --------------------------------------------------
    CROSSHAIR
------------------------------------------------------------- */
+-------------------------------------------------- */
 
 .hero-crosshair {
   position: absolute;
@@ -920,9 +607,9 @@ a {
   top: -20px;
 }
 
-/* ------------------------------------------------------------
-   LIGHT
------------------------------------------------------------- */
+/* --------------------------------------------------
+   HERO LIGHT
+-------------------------------------------------- */
 
 .hero-light {
   position: absolute;
@@ -938,13 +625,14 @@ a {
   mix-blend-mode: screen;
 }
 
-/* ------------------------------------------------------------
+/* --------------------------------------------------
    TECHNICAL LINES
------------------------------------------------------------- */
+-------------------------------------------------- */
 
 .hero-lines {
   position: absolute;
   inset: -20%;
+
   opacity: 0.5;
 
   background-image:
@@ -970,9 +658,9 @@ a {
   transform: rotate(-3deg);
 }
 
-/* ------------------------------------------------------------
-   NOISE
------------------------------------------------------------- */
+/* --------------------------------------------------
+   HERO NOISE
+-------------------------------------------------- */
 
 .hero-noise {
   position: absolute;
@@ -1008,7 +696,378 @@ a {
 }
 
 /* --------------------------------------------------
-   KEEP CONTENT ABOVE BACKGROUND
+   HERO PORTRAIT
+-------------------------------------------------- */
+
+.hero-portrait {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background: #151515;
+}
+
+.hero-portrait-image {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center center;
+
+  filter:
+    grayscale(100%)
+    contrast(1.15)
+    brightness(0.82);
+
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.8s ease;
+}
+
+.hero-portrait:hover .hero-portrait-image {
+  transform: scale(1.035);
+
+  filter:
+    grayscale(100%)
+    contrast(1.25)
+    brightness(0.9);
+}
+
+.hero-portrait::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: 1;
+
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.08),
+    transparent 40%,
+    rgba(0, 0, 0, 0.35)
+  );
+}
+
+.portrait-label {
+  position: absolute;
+
+  left: 1rem;
+  bottom: 1rem;
+
+  z-index: 2;
+
+  font-family: var(--font-grotesk);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+
+  color: white;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------
+   HERO CAROUSEL
+-------------------------------------------------- */
+
+.hero-carousel {
+  position: relative;
+
+  min-width: 0;
+  overflow: hidden;
+
+  background: transparent;
+}
+
+.hero-carousel-track {
+  width: 100%;
+  overflow: hidden;
+
+  padding: 1.5rem 0;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-carousel-content {
+  display: flex;
+
+  width: max-content;
+
+  align-items: center;
+  gap: 1.25rem;
+
+  font-family: var(--font-times);
+  font-size: clamp(2rem, 3vw, 3.5rem);
+
+  line-height: 1;
+  white-space: nowrap;
+
+  animation: heroCarousel 22s linear infinite;
+}
+
+.hero-carousel-content span {
+  display: inline-block;
+}
+
+.hero-carousel-symbol {
+  font-family: var(--font-grotesk);
+  font-size: 0.7em;
+  color: var(--muted);
+}
+
+@keyframes heroCarousel {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.hero-carousel-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  padding: 0.8rem 1rem;
+
+  font-family: var(--font-grotesk);
+  font-size: 0.55rem;
+
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  color: var(--muted);
+}
+
+/* --------------------------------------------------
+   INTERACTIVE BACKGROUND
+-------------------------------------------------- */
+
+.interactive-background {
+  position: fixed;
+  inset: 0;
+
+  z-index: 0;
+  pointer-events: none;
+
+  overflow: hidden;
+
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+
+.background-grid {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 60%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 60%,
+    transparent 100%
+  );
+}
+
+.background-glow {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    circle 350px at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.09),
+    rgba(255, 255, 255, 0.025) 40%,
+    transparent 75%
+  );
+}
+
+.background-orbit {
+  position: absolute;
+
+  width: 70vw;
+  height: 70vw;
+
+  max-width: 1000px;
+  max-height: 1000px;
+
+  left: 50%;
+  top: 45%;
+
+  transform: translate(-50%, -50%);
+
+  border: 1px solid rgba(255, 255, 255, 0.025);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 80px rgba(255, 255, 255, 0.008),
+    0 0 0 160px rgba(255, 255, 255, 0.005);
+
+  animation: orbitFloat 18s ease-in-out infinite alternate;
+}
+
+.background-orbit::before,
+.background-orbit::after {
+  content: "";
+
+  position: absolute;
+  inset: 12%;
+
+  border: 1px solid rgba(255, 255, 255, 0.018);
+  border-radius: 50%;
+}
+
+.background-orbit::after {
+  inset: 25%;
+}
+
+.background-noise {
+  position: absolute;
+  inset: -50%;
+
+  opacity: 0.035;
+
+  background-image:
+    repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      rgba(255, 255, 255, 0.35) 1px,
+      transparent 2px
+    );
+
+  background-size: 5px 5px;
+
+  animation: noiseMove 0.25s steps(2) infinite;
+}
+
+@keyframes orbitFloat {
+  0% {
+    transform: translate(-50%, -50%) rotate(-2deg) scale(1);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(2deg) scale(1.025);
+  }
+}
+
+@keyframes noiseMove {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(2%, -1%);
+  }
+
+  50% {
+    transform: translate(-1%, 2%);
+  }
+
+  75% {
+    transform: translate(1%, 1%);
+  }
+
+  100% {
+    transform: translate(-2%, -1%);
+  }
+}
+
+/* --------------------------------------------------
+   RESPONSIVE
+-------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .display-xl {
+    font-size: clamp(4rem, 18vw, 7rem);
+  }
+
+  .display-lg {
+    font-size: clamp(3.5rem, 15vw, 6rem);
+  }
+
+  .label-vertical {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .hero-carousel {
+    border-top: 1px solid var(--line);
+  }
+
+  .hero-carousel-content {
+    font-size: 2rem;
+  }
+
+  .hero-orbit-one {
+    width: 100vw;
+    height: 100vw;
+  }
+
+  .hero-orbit-two {
+    width: 70vw;
+    height: 70vw;
+  }
+}
+
+/* --------------------------------------------------
+   REDUCED MOTION
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-carousel-content {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------
+   FOCUS
+-------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------
+   PAGE CONTENT ABOVE GLOBAL BACKGROUND
 -------------------------------------------------- */
 
 main,

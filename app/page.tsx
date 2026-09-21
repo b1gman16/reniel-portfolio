@@ -62,23 +62,26 @@ export default function Home() {
       {/* ============================================================
           HERO
       ============================================================ */}
+
       <section className="hero-section site-grid">
+        {/* ATMOSPHERE */}
         <div className="hero-atmosphere" aria-hidden="true">
           <div className="hero-ghost-number">01</div>
+
           <div className="hero-orbit hero-orbit-one" />
           <div className="hero-orbit hero-orbit-two" />
+
           <div className="hero-crosshair" />
           <div className="hero-light" />
           <div className="hero-lines" />
           <div className="hero-noise" />
         </div>
-        {/* NAME */}
 
+        {/* NAME */}
         <div className="grid-cell col-span-12 min-h-[22vh] p-5 sm:p-8 md:col-span-7 md:min-h-[32vh] md:p-10">
           <div className="flex h-full flex-col justify-between">
             <div className="meta flex justify-between">
               <span>RENIEL TEJONES</span>
-
               <span>CEBU / PHILIPPINES</span>
             </div>
 
@@ -91,11 +94,10 @@ export default function Home() {
         </div>
 
         {/* PORTRAIT */}
-
         <div className="hero-portrait col-span-12 md:col-span-5 md:row-span-2">
           <Image
             src="/portrait.jpg"
-            alt="Portrait of Reniel Tejones"
+            alt="Portrait"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 42vw"
@@ -108,11 +110,9 @@ export default function Home() {
         </div>
 
         {/* STATEMENT */}
-
         <div className="grid-cell col-span-12 flex min-h-[35vh] flex-col justify-between p-5 sm:p-8 md:col-span-7 md:p-10">
           <div className="flex items-start justify-between">
             <span className="meta">01 — INTRODUCTION</span>
-
             <span className="meta">BUILDER / ENGINEER</span>
           </div>
 
@@ -121,7 +121,7 @@ export default function Home() {
               I take ambiguous ideas and turn them into things that work.
             </p>
 
-            <p className="mt-7 max-w-md text-sm leading-6 text-[var(--muted)]">
+            <p className="mt-7 max-w-md text-sm leading-6 text-(--muted)">
               Computer Engineering graduate interested in technology,
               systems, digital design, and the business behind what gets built.
             </p>
@@ -160,24 +160,31 @@ export default function Home() {
             <div className="hero-carousel-content">
               <span>BUILD</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>DESIGN</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>SYSTEMS</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>ENGINEER</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>CREATE</span>
               <span className="hero-carousel-symbol">✦</span>
 
-              {/* duplicate for seamless loop */}
               <span>BUILD</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>DESIGN</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>SYSTEMS</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>ENGINEER</span>
               <span className="hero-carousel-symbol">✦</span>
+
               <span>CREATE</span>
               <span className="hero-carousel-symbol">✦</span>
             </div>
@@ -190,7 +197,6 @@ export default function Home() {
         </div>
 
         {/* META STRIP */}
-
         <div className="grid-cell col-span-12 grid grid-cols-2 md:grid-cols-4">
           {[
             "COMPUTER ENGINEERING",
@@ -200,11 +206,9 @@ export default function Home() {
           ].map((item, index) => (
             <div
               key={item}
-              className="border-r border-[var(--line)] p-5 last:border-r-0 sm:p-7"
+              className="border-r border-(--line) p-5 last:border-r-0 sm:p-7"
             >
-              <span className="meta">
-                0{index + 1}
-              </span>
+              <span className="meta">0{index + 1}</span>
 
               <p className="mt-3 text-xs uppercase tracking-[0.12em]">
                 {item}
@@ -219,7 +223,7 @@ export default function Home() {
       ============================================================ */}
 
       <section id="work">
-        <div className="border-b border-[var(--line)] px-5 py-8 sm:px-8 md:px-10 md:py-12">
+        <div className="border-b border-(--line) px-5 py-8 sm:px-8 md:px-10 md:py-12">
           <div className="flex items-end justify-between">
             <div>
               <span className="meta">02 — SELECTED WORK</span>
@@ -229,7 +233,7 @@ export default function Home() {
               </h2>
             </div>
 
-            <span className="hidden font-display text-7xl leading-none text-[var(--faint)] md:block">
+            <span className="hidden font-display text-7xl leading-none text-(--faint) md:block">
               02
             </span>
           </div>
@@ -251,7 +255,7 @@ export default function Home() {
           PROCESS
       ============================================================ */}
 
-      <section className="border-b border-[var(--line)] bg-[var(--paper)] text-[#101010]">
+      <section className="border-b border-(--line) bg-(--paper) text-[#101010]">
         <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 md:px-10 md:py-28">
           <div className="grid gap-14 md:grid-cols-12">
             <div className="md:col-span-4">
@@ -259,7 +263,7 @@ export default function Home() {
                 03 — PROCESS
               </span>
 
-              <h2 className="font-display mt-5 text-6xl leading-[0.8] tracking-[-0.05em] md:text-8xl">
+              <h2 className="font-display mt-5 text-6xl leading-[0.8] tracking-tighter md:text-8xl">
                 How
                 <br />
                 I build.
@@ -282,7 +286,7 @@ export default function Home() {
           CURRENTLY
       ============================================================ */}
 
-      <section className="border-b border-[var(--line)]">
+      <section className="border-b border-(--line)">
         <div className="site-grid">
           <div className="grid-cell col-span-12 p-5 sm:p-8 md:col-span-3 md:p-10">
             <span className="label-vertical">
@@ -299,25 +303,23 @@ export default function Home() {
               career declaration.
             </h2>
 
-            <p className="mt-8 max-w-xl text-sm leading-6 text-[var(--muted)]">
+            <p className="mt-8 max-w-xl text-sm leading-6 text-(--muted)">
               Just the things currently holding my attention.
             </p>
 
-            <div className="mt-16 grid gap-px bg-[var(--line)] sm:grid-cols-2">
+            <div className="mt-16 grid gap-px bg-(--line) sm:grid-cols-2">
               {exploring.map((item, index) => (
                 <div
                   key={item.name}
-                  className="bg-[var(--bg)] p-7 md:p-9"
+                  className="bg-(--bg) p-7 md:p-9"
                 >
-                  <span className="meta">
-                    0{index + 1}
-                  </span>
+                  <span className="meta">0{index + 1}</span>
 
                   <h3 className="font-display mt-8 text-3xl md:text-4xl">
                     {item.name}
                   </h3>
 
-                  <p className="mt-5 text-sm leading-6 text-[var(--muted)]">
+                  <p className="mt-5 text-sm leading-6 text-(--muted)">
                     {item.body}
                   </p>
                 </div>
@@ -342,10 +344,10 @@ export default function Home() {
               </h2>
             </div>
 
-            <CatMark className="h-9 w-9 text-[var(--muted)]" />
+            <CatMark className="h-9 w-9 text-(--muted)" />
           </div>
 
-          <div className="mt-14 border-t border-[var(--line)] pt-8">
+          <div className="mt-14 border-t border-(--line) pt-8">
             <div className="flex flex-wrap gap-x-8 gap-y-3">
               {[
                 "FILM",
@@ -357,7 +359,7 @@ export default function Home() {
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="font-display text-3xl italic text-[var(--muted)] transition-colors hover:text-[var(--white)] md:text-5xl"
+                  className="font-display text-3xl italic text-(--muted) transition-colors hover:text-(--white) md:text-5xl"
                 >
                   {tag}
                 </span>
