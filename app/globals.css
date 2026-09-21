@@ -98,20 +98,19 @@ a {
 
 .grid-cell {
   position: relative;
-  background: rgba(11, 11, 11, 0.72);
+  background: transparent;
   min-width: 0;
 }
 
-/* Keep the grid lines visible while allowing
-   the interactive background to show through */
 .hero-section .grid-cell {
-  background: rgba(11, 11, 11, 0.48);
+  background: transparent;
 }
 
 .hero-section {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  background: transparent;
 }
 
 /* Atmospheric layer stays BEHIND content */

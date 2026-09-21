@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Cursor from "@/components/Cursor";
 import SmoothScroll from "@/components/SmoothScroll";
+import InteractiveBackground from "@/components/InteractiveBackground";
 
 export const metadata: Metadata = {
   title: "Reniel Tejones — Builder",
@@ -27,6 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <InteractiveBackground />
+
         <SmoothScroll />
         <Cursor />
         <Nav />

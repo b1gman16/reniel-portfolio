@@ -34,7 +34,6 @@ export default function InteractiveBackground() {
       <div className="background-grid" />
       <div className="background-glow" />
       <div className="background-orbit" />
-      <div className="background-noise" />
     </div>
   );
 }
