@@ -1,8 +1,10 @@
+import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="glass-light col-span-12 rounded-sm border border-line p-6 md:p-8 lg:col-span-7">
+    <section id="about" aria-labelledby="about-title" className="glass-light relative col-span-12 rounded-sm border border-line p-6 md:p-8 lg:col-span-7">
+      <PanelGlow />
       <SectionLabel className="text-muted">Background</SectionLabel>
       <h2 id="about-title" className="mt-2 font-display text-4xl leading-none md:text-5xl">Engineer first, builder always</h2>
       <div className="mt-6 max-w-xl space-y-4 text-[15px] leading-relaxed">

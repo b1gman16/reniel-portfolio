@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import { PanelGlow } from "@/components/ui/panel-glow";
 import type { FeaturedProject } from "@/data/featured-projects";
 
 function ImageSlot({ project, dark }: { project: FeaturedProject; dark: boolean }) {
@@ -21,7 +22,8 @@ function ImageSlot({ project, dark }: { project: FeaturedProject; dark: boolean 
 export function ProjectCard({ project, tone, className = "" }: { project: FeaturedProject; tone: "light" | "dark"; className?: string }) {
   const dark = tone === "dark";
   return (
-    <article className={`group flex flex-col gap-6 rounded-sm border p-6 md:p-8 ${dark ? "dark-panel glass-dark border-graphite text-bone" : "glass-light border-line"} ${className}`}>
+    <article className={`group relative flex flex-col gap-6 rounded-sm border p-6 md:p-8 ${dark ? "dark-panel glass-dark border-graphite text-bone" : "glass-light border-line"} ${className}`}>
+      <PanelGlow tone={tone} />
       <ImageSlot project={project} dark={dark} />
       <div>
         <p className={`label ${dark ? "text-silver" : "text-muted"}`}>{project.label}</p>

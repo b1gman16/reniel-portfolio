@@ -1,4 +1,5 @@
 import { ArrowUpRight, Envelope, GithubLogo, LinkedinLogo } from "@phosphor-icons/react/dist/ssr";
+import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { site } from "@/data/site";
 
@@ -9,7 +10,8 @@ const links = [
 
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-title" className="glass-light col-span-12 flex flex-col justify-between gap-10 rounded-sm border border-ink p-6 md:p-8 lg:col-span-5">
+    <section id="contact" aria-labelledby="contact-title" className="glass-light relative col-span-12 flex flex-col justify-between gap-10 rounded-sm border border-ink p-6 md:p-8 lg:col-span-5">
+      <PanelGlow />
       <div>
         <SectionLabel className="text-muted">Contact</SectionLabel>
         <h2 id="contact-title" className="mt-2 font-display text-5xl leading-[0.9] md:text-6xl">Have something that needs building?</h2>

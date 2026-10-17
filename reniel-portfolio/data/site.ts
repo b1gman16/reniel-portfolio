@@ -5,8 +5,8 @@ export const site = {
   location: "Cebu, Philippines",
   githubUsername: process.env.GITHUB_USERNAME || "b1gman16",
   // TODO: replace with your real links.
-  linkedin: "https://www.linkedin.com/in/REPLACE-ME",
-  email: "REPLACE-ME@example.com",
+  linkedin: "www.linkedin.com/in/reniel-tejones",
+  email: "renieltejones@gmail.com",
   // Photo lives at public/images/portrait.jpg (served from /images/portrait.jpg).
   portrait: "/images/portrait.jpg" as string | null,
   // Configurable. Set show:false to hide. Confirm the wording is accurate before deploying.

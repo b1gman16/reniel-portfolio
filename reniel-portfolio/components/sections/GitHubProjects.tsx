@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { RepositoryCard } from "@/components/projects/RepositoryCard";
+import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { featuredProjects } from "@/data/featured-projects";
 import { site } from "@/data/site";
@@ -15,7 +16,8 @@ export async function GitHubProjects() {
   const profile = `https://github.com/${site.githubUsername}?tab=repositories`;
 
   return (
-    <section aria-labelledby="repos-title" className="glass-light col-span-12 rounded-sm border border-line p-6 md:p-8 lg:col-span-8">
+    <section aria-labelledby="repos-title" className="glass-light relative col-span-12 rounded-sm border border-line p-6 md:p-8 lg:col-span-8">
+      <PanelGlow />
       <div className="flex items-end justify-between gap-4">
         <div>
           <SectionLabel className="text-muted">From GitHub / Auto-updated</SectionLabel>

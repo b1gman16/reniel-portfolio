@@ -7,7 +7,6 @@ import { ContributionHeatmap } from "@/components/sections/ContributionHeatmap";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
 import { GitHubProjects } from "@/components/sections/GitHubProjects";
 import { Hero } from "@/components/sections/Hero";
-import { ToolStrip } from "@/components/sections/ToolStrip";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SonarGrid } from "@/components/ui/sonar-grid";
 
@@ -30,7 +29,6 @@ export default function Home() {
       <Sidebar />
       <main className="lg:ml-[264px]">
         <Hero />
-        <ToolStrip />
         <div id="work" className="grid grid-cols-12 gap-4 p-4 md:gap-5 md:p-10">
           <FeaturedProjects />
           <Suspense fallback={<Skeleton className="col-span-12 h-80 lg:col-span-8" />}>

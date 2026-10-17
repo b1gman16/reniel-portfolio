@@ -1,6 +1,7 @@
 import { GithubLogo } from "@phosphor-icons/react/dist/ssr";
 import { getContributions } from "@/lib/github/contributions";
 import { site } from "@/data/site";
+import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Heatmap } from "./Heatmap";
 
@@ -9,7 +10,8 @@ export async function ContributionHeatmap() {
   const profile = `https://github.com/${site.githubUsername}`;
 
   return (
-    <section aria-labelledby="activity-title" className="dark-panel glass-dark col-span-12 rounded-sm border border-graphite p-6 text-bone md:p-8">
+    <section aria-labelledby="activity-title" className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-6 text-bone md:p-8">
+      <PanelGlow tone="dark" />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <SectionLabel className="text-silver">GitHub activity / Last 12 months</SectionLabel>

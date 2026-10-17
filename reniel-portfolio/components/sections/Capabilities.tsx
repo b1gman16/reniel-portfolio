@@ -1,4 +1,5 @@
 import { Buildings, Cpu, Globe, Sparkle } from "@phosphor-icons/react/dist/ssr";
+import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const items = [
@@ -10,7 +11,8 @@ const items = [
 
 export function Capabilities() {
   return (
-    <section aria-labelledby="cap-title" className="dark-panel glass-dark col-span-12 rounded-sm border border-graphite p-6 text-bone md:p-8 lg:col-span-4">
+    <section aria-labelledby="cap-title" className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-6 text-bone md:p-8 lg:col-span-4">
+      <PanelGlow tone="dark" />
       <SectionLabel className="text-silver">Capabilities</SectionLabel>
       <h2 id="cap-title" className="mt-2 font-display text-4xl leading-none md:text-5xl">What I build</h2>
       <ul className="mt-6 divide-y divide-graphite border-y border-graphite">
