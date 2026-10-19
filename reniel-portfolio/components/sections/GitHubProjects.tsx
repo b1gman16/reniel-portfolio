@@ -5,6 +5,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { featuredProjects } from "@/data/featured-projects";
 import { site } from "@/data/site";
 import { getRepositories } from "@/lib/github/repositories";
+import { revealDelay } from "@/lib/reveal";
 
 export async function GitHubProjects() {
   const result = await getRepositories({
@@ -16,7 +17,12 @@ export async function GitHubProjects() {
   const profile = `https://github.com/${site.githubUsername}?tab=repositories`;
 
   return (
-    <section aria-labelledby="repos-title" className="glass-light relative col-span-12 rounded-sm border border-line p-5 md:p-6 lg:col-span-8">
+    <section
+      data-reveal
+      style={revealDelay(0)}
+      aria-labelledby="repos-title"
+      className="glass-light relative col-span-12 rounded-sm border border-line p-5 md:p-6 lg:col-span-8"
+    >
       <PanelGlow />
       <div className="flex items-end justify-between gap-4">
         <div>

@@ -15,6 +15,7 @@ import {
   X,
 } from "@phosphor-icons/react/dist/ssr";
 import { nav, site } from "@/data/site";
+import { GlassButton } from "@/components/ui/glass-button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import type { IconComponent } from "@/lib/icons";
 
@@ -57,18 +58,18 @@ function Portrait() {
 
 function Socials() {
   return (
-    <ul className="flex items-center gap-1.5">
+    <ul className="flex items-center gap-2">
       {socials.map((s) => (
         <li key={s.label}>
-          <a
+          <GlassButton
             href={s.href}
+            size="icon"
             aria-label={s.label}
             title={s.label}
-            className="flex h-10 w-10 items-center justify-center rounded-sm border border-line transition-colors hover:bg-ink hover:text-canvas"
             {...(s.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           >
             <s.Icon size={18} aria-hidden />
-          </a>
+          </GlassButton>
         </li>
       ))}
     </ul>
@@ -142,18 +143,18 @@ export function Sidebar() {
       {/* Mobile / tablet top bar */}
       <header className="glass-light fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between border-b border-line px-4 lg:hidden">
         <a href="#home" className="font-display text-xl">{site.name}</a>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <ThemeToggle />
-          <button
+          <GlassButton
             type="button"
+            size="icon"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex h-10 w-10 items-center justify-center rounded-sm border border-line transition-colors hover:bg-ink hover:text-canvas"
           >
             {open ? <X size={20} aria-hidden /> : <List size={20} aria-hidden />}
-          </button>
+          </GlassButton>
         </div>
       </header>
       {open && (

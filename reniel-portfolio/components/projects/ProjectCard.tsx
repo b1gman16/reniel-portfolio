@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { PanelGlow } from "@/components/ui/panel-glow";
 import type { FeaturedProject } from "@/data/featured-projects";
+import { revealDelay } from "@/lib/reveal";
 
 // .img-slot flexes to fill leftover height on desktop (see globals.css), so the text never overflows.
 function ImageSlot({ project, dark }: { project: FeaturedProject; dark: boolean }) {
@@ -20,10 +21,24 @@ function ImageSlot({ project, dark }: { project: FeaturedProject; dark: boolean 
   );
 }
 
-export function ProjectCard({ project, tone, className = "" }: { project: FeaturedProject; tone: "light" | "dark"; className?: string }) {
+export function ProjectCard({
+  project,
+  tone,
+  className = "",
+  delay = 0,
+}: {
+  project: FeaturedProject;
+  tone: "light" | "dark";
+  className?: string;
+  delay?: number;
+}) {
   const dark = tone === "dark";
   return (
-    <article className={`group relative flex flex-col gap-4 rounded-sm border p-5 md:p-6 lg:min-h-0 ${dark ? "dark-panel glass-dark border-graphite text-bone" : "glass-light border-line"} ${className}`}>
+    <article
+      data-reveal
+      style={revealDelay(delay)}
+      className={`group relative flex flex-col gap-4 rounded-sm border p-5 md:p-6 lg:min-h-0 ${dark ? "dark-panel glass-dark border-graphite text-bone" : "glass-light border-line"} ${className}`}
+    >
       <PanelGlow tone={tone} />
       <ImageSlot project={project} dark={dark} />
       <div>

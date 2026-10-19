@@ -1,6 +1,7 @@
 import { Buildings, Cpu, Globe, Sparkle } from "@phosphor-icons/react/dist/ssr";
 import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { revealDelay } from "@/lib/reveal";
 
 const items = [
   { Icon: Globe, title: "Websites", desc: "Design and build, from brand sites to full web apps." },
@@ -11,7 +12,12 @@ const items = [
 
 export function Capabilities() {
   return (
-    <section aria-labelledby="cap-title" className="dark-panel glass-dark relative col-span-12 flex flex-col rounded-sm border border-graphite p-5 text-bone md:p-6 lg:col-span-4">
+    <section
+      data-reveal
+      style={revealDelay(140)}
+      aria-labelledby="cap-title"
+      className="dark-panel glass-dark relative col-span-12 flex flex-col rounded-sm border border-graphite p-5 text-bone md:p-6 lg:col-span-4"
+    >
       <PanelGlow tone="dark" />
       <SectionLabel className="text-silver">Capabilities</SectionLabel>
       <h2 id="cap-title" className="mt-2 font-display text-3xl leading-none md:text-4xl">What I build</h2>

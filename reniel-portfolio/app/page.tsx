@@ -7,6 +7,7 @@ import { ContributionHeatmap } from "@/components/sections/ContributionHeatmap";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
 import { GitHubProjects } from "@/components/sections/GitHubProjects";
 import { Hero } from "@/components/sections/Hero";
+import { RevealObserver } from "@/components/ui/RevealObserver";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SonarGrid } from "@/components/ui/sonar-grid";
 
@@ -26,6 +27,7 @@ export default function Home() {
         pingEvery={3}
         pingArea={[0.05, 0.05, 0.95, 0.95]}
       />
+      <RevealObserver />
       <Sidebar />
       <main className="lg:ml-[264px]">
         {/* Screen 1: hero */}

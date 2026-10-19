@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "@phosphor-icons/react/dist/ssr";
+import { GlassButton } from "@/components/ui/glass-button";
 
 type Theme = "light" | "dark";
 
@@ -28,14 +29,14 @@ export function ThemeToggle() {
   };
 
   return (
-    <button
+    <GlassButton
       type="button"
+      size="icon"
       onClick={toggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className="flex h-10 w-10 items-center justify-center rounded-sm border border-line transition-colors hover:bg-ink hover:text-canvas"
     >
       {theme === "dark" ? <Sun size={18} aria-hidden /> : <Moon size={18} aria-hidden />}
-    </button>
+    </GlassButton>
   );
 }

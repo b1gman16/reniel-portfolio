@@ -1,9 +1,16 @@
 import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { revealDelay } from "@/lib/reveal";
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="glass-light relative col-span-12 rounded-sm border border-line p-5 md:p-6 lg:col-span-7">
+    <section
+      id="about"
+      data-reveal
+      style={revealDelay(0)}
+      aria-labelledby="about-title"
+      className="glass-light relative col-span-12 rounded-sm border border-line p-5 md:p-6 lg:col-span-7"
+    >
       <PanelGlow />
       <SectionLabel className="text-muted">Background</SectionLabel>
       <h2 id="about-title" className="mt-2 font-display text-3xl leading-none md:text-4xl">Engineer first, builder always</h2>

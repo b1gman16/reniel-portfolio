@@ -3,6 +3,7 @@ import { getContributions } from "@/lib/github/contributions";
 import { site } from "@/data/site";
 import { PanelGlow } from "@/components/ui/panel-glow";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { revealDelay } from "@/lib/reveal";
 import { Heatmap } from "./Heatmap";
 
 export async function ContributionHeatmap() {
@@ -10,7 +11,12 @@ export async function ContributionHeatmap() {
   const profile = `https://github.com/${site.githubUsername}`;
 
   return (
-    <section aria-labelledby="activity-title" className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-5 text-bone md:p-6">
+    <section
+      data-reveal
+      style={revealDelay(0)}
+      aria-labelledby="activity-title"
+      className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-5 text-bone md:p-6"
+    >
       <PanelGlow tone="dark" />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
