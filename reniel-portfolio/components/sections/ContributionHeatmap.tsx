@@ -10,12 +10,12 @@ export async function ContributionHeatmap() {
   const profile = `https://github.com/${site.githubUsername}`;
 
   return (
-    <section aria-labelledby="activity-title" className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-6 text-bone md:p-8">
+    <section aria-labelledby="activity-title" className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-5 text-bone md:p-6">
       <PanelGlow tone="dark" />
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <SectionLabel className="text-silver">GitHub activity / Last 12 months</SectionLabel>
-          <h2 id="activity-title" className="mt-2 font-display text-4xl leading-none md:text-5xl">
+          <h2 id="activity-title" className="mt-2 font-display text-3xl leading-none md:text-4xl">
             {result.status === "ok" ? `${result.total.toLocaleString("en-US")} contributions` : "Contribution activity"}
           </h2>
         </div>
@@ -25,7 +25,7 @@ export async function ContributionHeatmap() {
         </a>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4">
         {result.status === "ok" ? (
           <Heatmap weeks={result.weeks} />
         ) : (
@@ -34,8 +34,8 @@ export async function ContributionHeatmap() {
           </p>
         )}
       </div>
-      <p className="mt-4 max-w-2xl text-xs leading-relaxed text-silver">
-        Counts come straight from GitHub&rsquo;s contribution calendar. They include commits, pull requests, issues, and reviews, so they won&rsquo;t match every commit one might expect. Private activity appears only if the profile setting and API allow it.
+      <p className="mt-3 max-w-3xl text-[11px] leading-relaxed text-silver">
+        Counts come straight from GitHub&rsquo;s contribution calendar (commits, pull requests, issues, reviews), so they won&rsquo;t match every commit one might expect. Private activity appears only if the profile setting and API allow it.
       </p>
     </section>
   );

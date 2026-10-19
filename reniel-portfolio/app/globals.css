@@ -60,6 +60,27 @@
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 body { background: var(--canvas); color: var(--ink); font-family: var(--font-sans); }
 
+/*
+  Full-screen sections with snap scrolling, desktop-sized screens only.
+  .screen     = one section per screen, snaps into place (one scroll = one section)
+  .fit-screen = fixed to the visible height (100dvh minus the 2.5rem top/bottom padding)
+  .img-slot   = inside .fit-screen, the image area absorbs leftover height instead of forcing a scroll
+  Phones, tablets and short windows keep normal scrolling.
+*/
+@media (min-width: 1024px) and (min-height: 680px) {
+  html { scroll-snap-type: y mandatory; scroll-padding-top: 0; }
+  .screen {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  .fit-screen { height: calc(100dvh - 5rem); }
+  .fit-screen .img-slot { aspect-ratio: auto; flex: 1 1 0; min-height: 5rem; }
+}
+
 /* Subtle grain: tiny inline SVG noise, no network request */
 body::after {
   content: "";

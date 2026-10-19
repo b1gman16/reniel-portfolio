@@ -6,14 +6,15 @@ import { technologies } from "@/data/technologies";
 
 export function Hero() {
   return (
-    <section id="home" className="reveal border-b border-line">
-      <div className="px-6 pb-14 pt-24 md:px-10 lg:pt-16">
+    <section id="home" className="screen reveal border-b border-line">
+      <div className="flex flex-1 flex-col justify-center px-6 pb-14 pt-24 md:px-10 lg:py-10">
         <SectionLabel className="text-muted">Independent Builder / Cebu, PH</SectionLabel>
-        <h1 className="mt-6 max-w-[11ch] font-display text-[clamp(4rem,13vw,10.5rem)] leading-[0.85] tracking-tight">
+        {/* Size follows both width and height so the headline always fits the screen */}
+        <h1 className="mt-5 max-w-[11ch] font-display text-[length:clamp(3.5rem,min(13vw,20vh),10.5rem)] leading-[0.85] tracking-tight">
           I make ideas <em className="not-italic text-muted">work.</em>
         </h1>
-        <div className="mt-10 grid gap-8 md:grid-cols-12">
-          <p className="max-w-md text-lg leading-relaxed md:col-span-6 md:col-start-6">
+        <div className="mt-8 grid gap-6 md:grid-cols-12">
+          <p className="max-w-md text-base leading-relaxed md:col-span-6 md:col-start-6 lg:text-lg">
             I build websites, business systems, and intelligent tools that turn real-world problems into working solutions.
           </p>
           <div className="flex flex-wrap gap-3 md:col-span-12">

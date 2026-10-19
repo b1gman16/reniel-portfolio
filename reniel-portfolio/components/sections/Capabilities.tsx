@@ -11,17 +11,18 @@ const items = [
 
 export function Capabilities() {
   return (
-    <section aria-labelledby="cap-title" className="dark-panel glass-dark relative col-span-12 rounded-sm border border-graphite p-6 text-bone md:p-8 lg:col-span-4">
+    <section aria-labelledby="cap-title" className="dark-panel glass-dark relative col-span-12 flex flex-col rounded-sm border border-graphite p-5 text-bone md:p-6 lg:col-span-4">
       <PanelGlow tone="dark" />
       <SectionLabel className="text-silver">Capabilities</SectionLabel>
-      <h2 id="cap-title" className="mt-2 font-display text-4xl leading-none md:text-5xl">What I build</h2>
-      <ul className="mt-6 divide-y divide-graphite border-y border-graphite">
+      <h2 id="cap-title" className="mt-2 font-display text-3xl leading-none md:text-4xl">What I build</h2>
+      {/* The list stretches to the height of the neighbouring repositories panel */}
+      <ul className="mt-5 flex flex-1 flex-col divide-y divide-graphite border-y border-graphite">
         {items.map(({ Icon, title, desc }) => (
-          <li key={title} className="flex gap-3 py-4">
-            <Icon size={20} aria-hidden className="mt-0.5 shrink-0 text-silver" />
+          <li key={title} className="flex flex-1 items-center gap-3 py-3">
+            <Icon size={20} aria-hidden className="shrink-0 text-silver" />
             <div>
               <h3 className="text-sm font-medium">{title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-bone/70">{desc}</p>
+              <p className="mt-0.5 text-sm leading-relaxed text-bone/70">{desc}</p>
             </div>
           </li>
         ))}

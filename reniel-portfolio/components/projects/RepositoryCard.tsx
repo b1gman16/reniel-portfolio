@@ -11,7 +11,7 @@ function formatDate(iso: string) {
 export function RepositoryCard({ repo }: { repo: Repo }) {
   return (
     // No blur here: the parent section is already glass, so inner cards just add a light tint.
-    <article className="group flex flex-col justify-between gap-6 rounded-sm border border-line bg-ink/5 p-5 transition-colors hover:border-ink hover:bg-ink/10">
+    <article className="group flex flex-col justify-between gap-4 rounded-sm border border-line bg-ink/5 p-4 transition-colors hover:border-ink hover:bg-ink/10">
       <div>
         <div className="flex items-start justify-between gap-3">
           <p className="label flex items-center gap-1.5 text-muted">
@@ -22,8 +22,8 @@ export function RepositoryCard({ repo }: { repo: Repo }) {
             <GithubLogo size={20} aria-hidden className="transition-transform group-hover:scale-110" />
           </a>
         </div>
-        <h3 className="mt-4 break-words font-display text-3xl leading-none">{repo.name}</h3>
-        {repo.description && <p className="mt-3 text-sm leading-relaxed text-ink/75">{repo.description}</p>}
+        <h3 className="mt-3 break-words font-display text-2xl leading-none">{repo.name}</h3>
+        {repo.description && <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink/75">{repo.description}</p>}
       </div>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-wider text-muted">
         <span className="flex items-center gap-1"><Star size={12} weight="fill" aria-hidden />{repo.stars}<span className="sr-only"> stars</span></span>

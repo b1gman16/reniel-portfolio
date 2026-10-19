@@ -28,20 +28,37 @@ export default function Home() {
       />
       <Sidebar />
       <main className="lg:ml-[264px]">
+        {/* Screen 1: hero */}
         <Hero />
-        <div id="work" className="grid grid-cols-12 gap-4 p-4 md:gap-5 md:p-10">
-          <FeaturedProjects />
-          <Suspense fallback={<Skeleton className="col-span-12 h-80 lg:col-span-8" />}>
-            <GitHubProjects />
-          </Suspense>
-          <Capabilities />
-          <Suspense fallback={<Skeleton className="col-span-12 h-64" />}>
-            <ContributionHeatmap />
-          </Suspense>
-          <About />
-          <Contact />
-        </div>
-        <footer className="label border-t border-line px-6 py-6 text-muted md:px-10">© {new Date().getFullYear()} Reniel Tejones</footer>
+
+        {/* Screen 2: featured projects, fitted to the visible height */}
+        <section id="work" aria-label="Selected work" className="screen p-4 md:p-10">
+          <div className="fit-screen grid grid-cols-12 gap-4 md:gap-5 lg:grid-rows-1">
+            <FeaturedProjects />
+          </div>
+        </section>
+
+        {/* Screen 3: repositories + capabilities */}
+        <section id="repos" aria-label="Repositories and capabilities" className="screen p-4 md:p-10">
+          <div className="grid grid-cols-12 gap-4 md:gap-5">
+            <Suspense fallback={<Skeleton className="col-span-12 h-80 lg:col-span-8" />}>
+              <GitHubProjects />
+            </Suspense>
+            <Capabilities />
+          </div>
+        </section>
+
+        {/* Screen 4: activity, background, contact */}
+        <section aria-label="Activity, background and contact" className="screen p-4 md:p-10">
+          <div className="grid grid-cols-12 gap-4 md:gap-5">
+            <Suspense fallback={<Skeleton className="col-span-12 h-64" />}>
+              <ContributionHeatmap />
+            </Suspense>
+            <About />
+            <Contact />
+          </div>
+          <p className="label mt-5 text-muted">© {new Date().getFullYear()} Reniel Tejones</p>
+        </section>
       </main>
     </>
   );
