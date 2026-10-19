@@ -49,7 +49,7 @@ function Portrait() {
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center rounded-sm border border-dashed border-silver bg-[repeating-linear-gradient(135deg,transparent_0_8px,rgba(128,128,128,0.08)_8px_9px)] p-4 text-center">
-          <p className="label text-muted">Portrait placeholder<br />public/images/portrait.jpg</p>
+          <p className="label text-muted">Portrait placeholder<br />public/images/portrait.png</p>
         </div>
       )}
     </div>
