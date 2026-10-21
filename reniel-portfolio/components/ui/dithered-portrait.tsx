@@ -2,47 +2,138 @@
 
 import { useEffect, useRef } from "react";
 
-// 4x4 ordered-dither (Bayer) threshold matrix
-const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+// 8x8 ordered-dither (Bayer) threshold matrix, built once
+const BAYER8 = (() => {
+  let m = [0];
+  for (let n = 1; n < 8; n *= 2) {
+    const size = n * 2;
+    const next = new Array<number>(size * size);
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const base = 4 * m[(y % n) * n + (x % n)];
+        const quadrant = (y >= n ? 2 : 0) + (x >= n ? 1 : 0);
+        next[y * size + x] = base + [0, 2, 3, 1][quadrant];
+      }
+    }
+    m = next;
+  }
+  return m;
+})();
 
 type Props = {
   src: string;
   alt: string;
-  /** Internal pixel width. Lower = chunkier dots. */
-  width?: number;
-  /** Tone controls: raise contrast for punchier dots, brightness to lighten/darken overall. */
+  /** Size of one dot in CSS pixels. Smaller = finer detail, larger = chunkier. */
+  dotSize?: number;
+  /** Raise for punchier dots, lower for softer. */
   contrast?: number;
+  /** Positive lightens, negative darkens (about -40 to 40). */
   brightness?: number;
   className?: string;
 };
 
 /**
- * Draws a photo as a black-and-white ordered dither on a canvas. Dots are light on the dark theme and
- * dark on the light theme; the rest stays transparent so the page shows through.
+ * Draws a photo as a black-and-white ordered dither at the screen's real resolution.
+ * Dots are light on the dark theme and dark on the light theme. Transparent pixels (PNG cutouts)
+ * stay transparent, so the page shows through around the subject.
  */
-export function DitheredPortrait({ src, alt, width = 480, contrast = 1.35, brightness = 8, className }: Props) {
+export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, brightness = 0, className }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const off = document.createElement("canvas");
+    const octx = off.getContext("2d", { willReadFrequently: true });
+    if (!octx) return;
 
-    let lum: Uint8ClampedArray | null = null;
-    let w = 0;
-    let h = 0;
+    let img: HTMLImageElement | null = null;
+    let raf = 0;
 
-    const paint = () => {
-      if (!lum) return;
+    const render = () => {
+      raf = 0;
+      if (!img) return;
+      const box = canvas.getBoundingClientRect();
+      if (box.width < 2 || box.height < 2) return;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cell = Math.max(1, Math.round(dotSize * dpr)); // device pixels per dot
+      const cw = Math.round(box.width * dpr);
+      const ch = Math.round(box.height * dpr);
+      canvas.width = cw;
+      canvas.height = ch;
+
+      // Fit the photo inside the box (contain), centered
+      const scale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
+      const dw = Math.round(img.naturalWidth * scale);
+      const dh = Math.round(img.naturalHeight * scale);
+      const dx = Math.round((cw - dw) / 2);
+      const dy = Math.round((ch - dh) / 2);
+      const gw = Math.max(1, Math.floor(dw / cell));
+      const gh = Math.max(1, Math.floor(dh / cell));
+
+      // Sample the photo down to one pixel per dot
+      off.width = gw;
+      off.height = gh;
+      octx.imageSmoothingEnabled = true;
+      octx.imageSmoothingQuality = "high";
+      octx.clearRect(0, 0, gw, gh);
+      octx.drawImage(img, 0, 0, gw, gh);
+      const data = octx.getImageData(0, 0, gw, gh).data;
+
+      // Luminance, plus a histogram so tones can be stretched to the full range
+      const lum = new Float32Array(gw * gh);
+      const hist = new Uint32Array(256);
+      let count = 0;
+      for (let i = 0; i < lum.length; i++) {
+        const o = i * 4;
+        if (data[o + 3] < 128) {
+          lum[i] = -1; // transparent
+          continue;
+        }
+        const l = 0.299 * data[o] + 0.587 * data[o + 1] + 0.114 * data[o + 2];
+        lum[i] = l;
+        hist[Math.min(255, Math.round(l))]++;
+        count++;
+      }
+      let lo = 0;
+      let hi = 255;
+      let acc = 0;
+      for (let v = 0; v < 256; v++) {
+        acc += hist[v];
+        if (acc >= count * 0.01) {
+          lo = v;
+          break;
+        }
+      }
+      acc = 0;
+      for (let v = 255; v >= 0; v--) {
+        acc += hist[v];
+        if (acc >= count * 0.01) {
+          hi = v;
+          break;
+        }
+      }
+      if (hi - lo < 16) {
+        lo = 0;
+        hi = 255;
+      }
+
+      // Dots: light on dark theme, dark on light theme
       const dark = document.documentElement.dataset.theme === "dark";
       const [r, g, b] = dark ? [243, 241, 235] : [16, 16, 16];
-      const out = ctx.createImageData(w, h);
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-          const i = y * w + x;
-          const threshold = ((BAYER[(y % 4) * 4 + (x % 4)] + 0.5) / 16) * 255;
-          const on = dark ? lum[i] > threshold : lum[i] < threshold;
+      const out = octx.createImageData(gw, gh);
+      for (let y = 0; y < gh; y++) {
+        for (let x = 0; x < gw; x++) {
+          const i = y * gw + x;
+          const l = lum[i];
+          if (l < 0) continue;
+          let v = ((l - lo) / (hi - lo)) * 255;
+          v = (v - 128) * contrast + 128 + brightness;
+          const threshold = ((BAYER8[(y % 8) * 8 + (x % 8)] + 0.5) / 64) * 255;
+          const on = dark ? v > threshold : v < threshold;
           if (!on) continue;
           const o = i * 4;
           out.data[o] = r;
@@ -51,46 +142,37 @@ export function DitheredPortrait({ src, alt, width = 480, contrast = 1.35, brigh
           out.data[o + 3] = 255;
         }
       }
-      ctx.putImageData(out, 0, 0);
+      octx.putImageData(out, 0, 0);
+
+      // Scale up with hard pixels so dots stay crisp
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(off, 0, 0, gw, gh, dx, dy, gw * cell, gh * cell);
     };
 
-    const img = new Image();
-    img.decoding = "async";
-    img.onload = () => {
-      w = width;
-      h = Math.round((width * img.naturalHeight) / img.naturalWidth);
-      canvas.width = w;
-      canvas.height = h;
-      ctx.drawImage(img, 0, 0, w, h);
-      const data = ctx.getImageData(0, 0, w, h).data;
-      const values = new Uint8ClampedArray(w * h);
-      for (let i = 0; i < values.length; i++) {
-        const o = i * 4;
-        const l = 0.299 * data[o] + 0.587 * data[o + 1] + 0.114 * data[o + 2];
-        values[i] = (l - 128) * contrast + 128 + brightness; // clamped to 0-255 automatically
-      }
-      lum = values;
-      ctx.clearRect(0, 0, w, h);
-      paint();
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(render);
     };
-    img.src = src;
 
-    // Repaint when the theme toggles
-    const observer = new MutationObserver(paint);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    const image = new Image();
+    image.decoding = "async";
+    image.onload = () => {
+      img = image;
+      schedule();
+    };
+    image.src = src;
+
+    const resize = new ResizeObserver(schedule);
+    resize.observe(canvas);
+    const theme = new MutationObserver(schedule);
+    theme.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
     return () => {
-      observer.disconnect();
-      img.onload = null;
+      resize.disconnect();
+      theme.disconnect();
+      cancelAnimationFrame(raf);
+      image.onload = null;
     };
-  }, [src, width, contrast, brightness]);
+  }, [src, dotSize, contrast, brightness]);
 
-  return (
-    <canvas
-      ref={ref}
-      role="img"
-      aria-label={alt}
-      className={`h-full w-full object-contain object-bottom [image-rendering:pixelated] ${className ?? ""}`}
-    />
-  );
+  return <canvas ref={ref} role="img" aria-label={alt} className={`h-full w-full ${className ?? ""}`} />;
 }

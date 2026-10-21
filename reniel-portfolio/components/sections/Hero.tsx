@@ -1,6 +1,7 @@
-import { ArrowDown, ArrowUpRight, PaperPlaneTilt } from "@phosphor-icons/react/dist/ssr";
+import { ArrowDown, Envelope, GithubLogo, LinkedinLogo, PaperPlaneTilt } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/Button";
 import { DitheredPortrait } from "@/components/ui/dithered-portrait";
+import { GlassButton } from "@/components/ui/glass-button";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { site } from "@/data/site";
@@ -8,18 +9,18 @@ import { technologies } from "@/data/technologies";
 import { revealDelay } from "@/lib/reveal";
 
 const links = [
-  { label: "github", href: `https://github.com/${site.githubUsername}` },
-  { label: "linkedin", href: site.linkedin },
-  { label: "email", href: `mailto:${site.email}` },
+  { label: "GitHub", href: `https://github.com/${site.githubUsername}`, Icon: GithubLogo },
+  { label: "LinkedIn", href: site.linkedin, Icon: LinkedinLogo },
+  { label: "Email", href: `mailto:${site.email}`, Icon: Envelope },
 ];
 
 export function Hero() {
   return (
     // Full width on desktop: the sidebar is hidden here, so cancel the layout's sidebar offset.
-    <section id="home" className="screen border-b border-line lg:-ml-[264px]">
-      <div className="mx-auto grid w-full max-w-6xl flex-1 gap-8 px-6 pt-12 md:px-10 lg:grid-cols-12 lg:grid-rows-1 lg:gap-12 lg:pt-10">
-        {/* Name, description, links */}
-        <div className="flex flex-col justify-center pb-2 lg:col-span-7 lg:pb-10">
+    <section id="home" className="screen flex flex-col border-b border-line lg:-ml-[264px] lg:min-h-dvh">
+      <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-8 px-6 py-12 md:px-10 lg:grid-cols-12 lg:gap-12 lg:py-10">
+        {/* Greeting, intro, links */}
+        <div className="flex flex-col justify-center lg:col-span-7">
           <div data-reveal="now" style={revealDelay(0)}>
             <SectionLabel className="text-muted">Independent Builder / Cebu, PH</SectionLabel>
           </div>
@@ -27,63 +28,56 @@ export function Hero() {
           <h1
             data-reveal="now"
             style={revealDelay(100)}
-            className="mt-4 break-words text-[length:clamp(2.25rem,min(4.6vw,9vh),4.5rem)] leading-[0.95] tracking-tight"
+            className="mt-4 font-display font-medium leading-[0.95] tracking-tight"
           >
-            {site.name}
+            <span className="block text-[length:clamp(1.25rem,min(2.6vw,5vh),2.25rem)] text-muted">Hi, I am</span>
+            {/* The name glows: white halo in dark mode, soft shadow in light mode */}
+            <span className="mt-2 block text-[length:clamp(2.75rem,min(7.2vw,12.5vh),6.5rem)] [--glow:rgb(16_16_16/0.28)] [text-shadow:0_0_18px_var(--glow),0_0_48px_var(--glow)] [[data-theme=dark]_&]:[--glow:rgb(243_241_235/0.5)]">
+              <span className="block">Reniel</span>
+              <span className="block">Tejones</span>
+            </span>
           </h1>
 
           <p
             data-reveal="now"
-            style={revealDelay(200)}
-            className="mt-6 max-w-xl text-base leading-relaxed text-ink/85 lg:text-[17px]"
+            style={revealDelay(220)}
+            className="mt-6 max-w-xl text-base leading-relaxed text-ink/85 [@media(max-height:760px)]:text-[15px]"
           >
-            I build websites, business systems, and intelligent tools that turn real-world problems into working solutions.
-          </p>
-          <p
-            data-reveal="now"
-            style={revealDelay(280)}
-            className="mt-4 max-w-xl text-base leading-relaxed text-ink/85 lg:text-[17px]"
-          >
-            Computer Engineering graduate from Cebu. Lately: HallGuard, an AI + IoT safety system, and the web and property-management workflows behind Bayfront Resort.
+            I turn ideas into things people can actually use. With a background in computer engineering, I build across software, hardware, and the web — figuring things out along the way. Lately, I’ve been exploring how technology and design can come together to create better digital experiences.
           </p>
 
-          <div data-reveal="now" style={revealDelay(360)} className="mt-7 flex flex-wrap gap-4">
+          <div data-reveal="now" style={revealDelay(320)} className="mt-7 flex flex-wrap items-center gap-4">
             <Button href="#work" icon={ArrowDown}>Explore selected work</Button>
             <Button href="#contact" icon={PaperPlaneTilt}>Get in touch</Button>
+            <ul className="flex items-center gap-3 sm:ml-2">
+              {links.map((l) => (
+                <li key={l.label}>
+                  <GlassButton
+                    href={l.href}
+                    size="icon"
+                    aria-label={l.label}
+                    title={l.label}
+                    {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    <l.Icon size={18} aria-hidden />
+                  </GlassButton>
+                </li>
+              ))}
+            </ul>
           </div>
-
-          <ul data-reveal="now" style={revealDelay(440)} className="mt-7 flex flex-wrap gap-x-5 gap-y-1">
-            {links.map((l) => (
-              <li key={l.label}>
-                <a
-                  href={l.href}
-                  className="group inline-flex min-h-9 items-center gap-1 font-mono text-xs lowercase tracking-wide text-muted transition-colors hover:text-ink"
-                  {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                >
-                  {l.label}
-                  <ArrowUpRight
-                    size={12}
-                    weight="bold"
-                    aria-hidden
-                    className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
 
-        {/* Portrait: stands on the technologies bar */}
+        {/* Portrait: centered beside the text, fitted inside its box, never clipped */}
         <div
           data-reveal="now"
-          style={revealDelay(220)}
-          className="relative h-[22rem] self-end lg:col-span-5 lg:h-[min(72dvh,46rem)]"
+          style={revealDelay(200)}
+          className="relative h-[22rem] w-full lg:col-span-5 lg:h-[min(62dvh,36rem)]"
         >
           {site.portrait ? (
             <DitheredPortrait src={site.portrait} alt={`Portrait of ${site.name}`} />
           ) : (
             <div className="flex h-full items-center justify-center border border-dashed border-silver p-4 text-center">
-              <p className="label text-muted">Portrait placeholder<br />public/images/portrait.jpg</p>
+              <p className="label text-muted">Portrait placeholder<br />public/images/portrait.png</p>
             </div>
           )}
         </div>
@@ -92,7 +86,7 @@ export function Hero() {
       {/* Technologies marquee. Edit the list in data/technologies.ts */}
       <div
         data-reveal="now"
-        style={revealDelay(520)}
+        style={revealDelay(480)}
         className="glass-light flex flex-col gap-2 border-t border-line px-6 py-3 sm:flex-row sm:items-center sm:gap-6 md:px-10"
       >
         <p className="label shrink-0 text-muted">Currently building with</p>

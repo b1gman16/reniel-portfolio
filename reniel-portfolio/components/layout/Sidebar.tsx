@@ -48,7 +48,7 @@ function Portrait() {
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center rounded-sm border border-dashed border-silver bg-[repeating-linear-gradient(135deg,transparent_0_8px,rgba(128,128,128,0.08)_8px_9px)] p-4 text-center">
-          <p className="label text-muted">Portrait placeholder<br />public/images/portrait.jpg</p>
+          <p className="label text-muted">Portrait placeholder<br />public/images/portrait.png</p>
         </div>
       )}
     </div>
@@ -142,7 +142,7 @@ export function Sidebar() {
       >
         <Portrait />
         <div className="shrink-0">
-          <h2 className="text-2xl leading-tight tracking-tight">{site.name}</h2>
+          <h2 className="font-display text-2xl font-medium leading-tight tracking-tight">{site.name}</h2>
           <p className="mt-2 text-sm">{site.role}</p>
           <p className="label mt-1.5 flex items-center gap-1.5 text-muted">
             <MapPin size={14} aria-hidden />
@@ -166,7 +166,7 @@ export function Sidebar() {
           pastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
-        <a href="#home" className="text-lg tracking-tight">{site.name}</a>
+        <a href="#home" className="font-display text-lg tracking-tight">{site.name}</a>
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <GlassButton

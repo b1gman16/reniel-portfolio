@@ -43,7 +43,7 @@ export function ProjectCard({
       <ImageSlot project={project} dark={dark} />
       <div>
         <p className={`label ${dark ? "text-silver" : "text-muted"}`}>{project.label}</p>
-        <h3 className="mt-2 text-2xl leading-[1.1] md:text-[1.75rem]">{project.title}</h3>
+        <h3 className="mt-2 font-display text-2xl font-medium leading-[1.1] md:text-[1.75rem]">{project.title}</h3>
         <p className={`mt-3 max-w-xl text-sm leading-relaxed ${dark ? "text-bone/80" : "text-ink/80"}`}>{project.description}</p>
       </div>
 

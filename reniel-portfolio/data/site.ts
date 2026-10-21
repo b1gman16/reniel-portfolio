@@ -7,8 +7,8 @@ export const site = {
   // TODO: replace with your real links.
   linkedin: "www.linkedin.com/in/reniel-tejones",
   email: "renieltejones@gmail.com",
-  // Photo lives at public/images/portrait.jpg (served from /images/portrait.jpg).
-  portrait: "/images/portrait.jpg" as string | null,
+  // Photo lives at public/images/portrait.png (served from /images/portrait.png).
+  portrait: "/images/portrait.png" as string | null,
   // Configurable. Set show:false to hide. Confirm the wording is accurate before deploying.
   availability: { show: true, label: "Available for select projects" },
   github: {

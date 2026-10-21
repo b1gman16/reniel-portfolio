@@ -22,7 +22,7 @@ export function Contact() {
       <PanelGlow />
       <div>
         <SectionLabel className="text-muted">Contact</SectionLabel>
-        <h2 id="contact-title" className="mt-2 text-3xl leading-[1.1] md:text-4xl">Have something that needs building?</h2>
+        <h2 id="contact-title" className="mt-2 font-display text-3xl font-medium leading-[1.1] md:text-4xl">Have something that needs building?</h2>
       </div>
       <div className="flex flex-col gap-4">
         <a href={`mailto:${site.email}`} className="group inline-flex min-h-11 items-center gap-3 border-b border-ink py-2 text-base">
