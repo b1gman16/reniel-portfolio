@@ -8,6 +8,31 @@ import { site } from "@/data/site";
 import { technologies } from "@/data/technologies";
 import { revealDelay } from "@/lib/reveal";
 
+/* ---- Tweak the hero's look here ------------------------------------------ */
+
+// Name glow: two stacked halos (tight + wide)
+const GLOW = {
+  near: 14, // px, size of the tight halo
+  far: 28, // px, size of the wide halo
+  strengthLight: 0.2, // 0 = none, 1 = solid. Light mode is a soft dark shadow
+  strengthDark: 0.4, // dark mode is a light halo
+};
+
+// Dithered portrait
+const PORTRAIT = {
+  dotSize: 0.5, // CSS px per dot: 1 = fine detail, 2–3 = chunky halftone
+  contrast: 1, // 1 = neutral, higher = punchier, lower = softer
+  brightness: 0, // -40 darker ... +40 lighter
+};
+
+/* -------------------------------------------------------------------------- */
+
+const glowStyle = {
+  "--glow-light": `rgb(16 16 16 / ${GLOW.strengthLight})`,
+  "--glow-dark": `rgb(243 241 235 / ${GLOW.strengthDark})`,
+  textShadow: `0 0 ${GLOW.near}px var(--glow), 0 0 ${GLOW.far}px var(--glow)`,
+} as React.CSSProperties;
+
 const links = [
   { label: "GitHub", href: `https://github.com/${site.githubUsername}`, Icon: GithubLogo },
   { label: "LinkedIn", href: site.linkedin, Icon: LinkedinLogo },
@@ -31,8 +56,11 @@ export function Hero() {
             className="mt-4 font-display font-medium leading-[0.95] tracking-tight"
           >
             <span className="block text-[length:clamp(1.25rem,min(2.6vw,5vh),2.25rem)] text-muted">Hi, I am</span>
-            {/* The name glows: white halo in dark mode, soft shadow in light mode */}
-            <span className="mt-2 block text-[length:clamp(2.75rem,min(7.2vw,12.5vh),6.5rem)] [--glow:rgb(16_16_16/0.28)] [text-shadow:0_0_18px_var(--glow),0_0_48px_var(--glow)] [[data-theme=dark]_&]:[--glow:rgb(243_241_235/0.5)]">
+            {/* The name glows: light halo in dark mode, soft shadow in light mode (see GLOW above) */}
+            <span
+              style={glowStyle}
+              className="mt-2 block text-[length:clamp(2.75rem,min(7.2vw,12.5vh),6.5rem)] [--glow:var(--glow-light)] [[data-theme=dark]_&]:[--glow:var(--glow-dark)]"
+            >
               <span className="block">Reniel</span>
               <span className="block">Tejones</span>
             </span>
@@ -74,7 +102,13 @@ export function Hero() {
           className="relative h-[22rem] w-full lg:col-span-5 lg:h-[min(62dvh,36rem)]"
         >
           {site.portrait ? (
-            <DitheredPortrait src={site.portrait} alt={`Portrait of ${site.name}`} />
+            <DitheredPortrait
+              src={site.portrait}
+              alt={`Portrait of ${site.name}`}
+              dotSize={PORTRAIT.dotSize}
+              contrast={PORTRAIT.contrast}
+              brightness={PORTRAIT.brightness}
+            />
           ) : (
             <div className="flex h-full items-center justify-center border border-dashed border-silver p-4 text-center">
               <p className="label text-muted">Portrait placeholder<br />public/images/portrait.png</p>
