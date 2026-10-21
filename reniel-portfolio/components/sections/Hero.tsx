@@ -21,7 +21,7 @@ const GLOW = {
 // Dithered portrait
 const PORTRAIT = {
   dotSize: 0.5, // CSS px per dot: 1 = fine detail, 2–3 = chunky halftone
-  contrast: 1, // 1 = neutral, higher = punchier, lower = softer
+  contrast: 1.5, // 1 = neutral, higher = punchier, lower = softer
   brightness: 0, // -40 darker ... +40 lighter
 };
 
