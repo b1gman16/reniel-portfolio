@@ -44,7 +44,6 @@ function Portrait() {
           alt={`Portrait of ${site.name}`}
           fill
           sizes="264px"
-          priority
           className="object-cover object-top grayscale"
         />
       ) : (
@@ -107,8 +106,23 @@ function Availability() {
   );
 }
 
+const ease = "transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]";
+
 export function Sidebar() {
   const [open, setOpen] = useState(false);
+  // false while the hero is mostly on screen; true once the visitor has scrolled past it
+  const [pastHero, setPastHero] = useState(false);
+
+  useEffect(() => {
+    const hero = document.getElementById("home");
+    if (!hero) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setPastHero((entry?.intersectionRatio ?? 0) < 0.35),
+      { threshold: [0, 0.35] }
+    );
+    io.observe(hero);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -119,11 +133,16 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Desktop sidebar: pinned to the viewport, never scrolls */}
-      <aside className="glass-light fixed inset-y-0 left-0 z-30 hidden h-dvh w-[264px] flex-col gap-5 overflow-hidden border-r border-line p-5 lg:flex">
+      {/* Desktop sidebar: pinned to the viewport, never scrolls. Hidden over the hero, eases in after it. */}
+      <aside
+        inert={!pastHero}
+        className={`glass-light fixed inset-y-0 left-0 z-30 hidden h-dvh w-[264px] flex-col gap-5 overflow-hidden border-r border-line p-5 lg:flex ${ease} ${
+          pastHero ? "translate-x-0 opacity-100" : "pointer-events-none -translate-x-full opacity-0"
+        }`}
+      >
         <Portrait />
         <div className="shrink-0">
-          <h2 className="font-display text-3xl leading-none">{site.name}</h2>
+          <h2 className="text-2xl leading-tight tracking-tight">{site.name}</h2>
           <p className="mt-2 text-sm">{site.role}</p>
           <p className="label mt-1.5 flex items-center gap-1.5 text-muted">
             <MapPin size={14} aria-hidden />
@@ -140,9 +159,14 @@ export function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile / tablet top bar */}
-      <header className="glass-light fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between border-b border-line px-4 lg:hidden">
-        <a href="#home" className="font-display text-xl">{site.name}</a>
+      {/* Mobile / tablet top bar: same behavior, slides down after the hero */}
+      <header
+        inert={!pastHero}
+        className={`glass-light fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between border-b border-line px-4 lg:hidden ${ease} ${
+          pastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
+        }`}
+      >
+        <a href="#home" className="text-lg tracking-tight">{site.name}</a>
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <GlassButton
@@ -157,7 +181,7 @@ export function Sidebar() {
           </GlassButton>
         </div>
       </header>
-      {open && (
+      {open && pastHero && (
         <div
           id="mobile-menu"
           className="fixed inset-x-0 top-14 z-40 flex max-h-[calc(100dvh-3.5rem)] flex-col gap-5 overflow-y-auto border-b border-line bg-canvas/95 p-5 backdrop-blur-md lg:hidden"
