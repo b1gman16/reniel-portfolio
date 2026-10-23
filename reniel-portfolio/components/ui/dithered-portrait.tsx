@@ -33,8 +33,14 @@ type Props = {
   contrast?: number;
   /** Positive lightens, negative darkens (about -40 to 40). */
   brightness?: number;
-  /** Where the photo sits inside its box. "bottom" makes the photo's lower edge meet the box's bottom. */
+  /** Where the photo sits inside its box vertically. */
   align?: "center" | "bottom";
+  /** Where the photo sits inside its box horizontally. */
+  alignX?: "left" | "center" | "right";
+  /**
+   * Sizing classes for the canvas. The component sets a --portrait-ratio CSS variable (the photo's
+   * width / height) so you can use `aspect-[var(--portrait-ratio)]` to size the canvas to the photo.
+   */
   className?: string;
 };
 
@@ -50,6 +56,7 @@ export function DitheredPortrait({
   contrast = 1.05,
   brightness = 0,
   align = "center",
+  alignX = "center",
   className,
 }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -79,11 +86,11 @@ export function DitheredPortrait({
       canvas.width = cw;
       canvas.height = ch;
 
-      // Fit the photo inside the box (contain) at full device resolution
+      // Fit the photo inside the box (contain) at full device resolution, then place it
       const scale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
       const dw = Math.max(1, Math.round(img.naturalWidth * scale));
       const dh = Math.max(1, Math.round(img.naturalHeight * scale));
-      const dx = Math.round((cw - dw) / 2);
+      const dx = alignX === "right" ? cw - dw : alignX === "left" ? 0 : Math.round((cw - dw) / 2);
       const dy = align === "bottom" ? ch - dh : Math.round((ch - dh) / 2);
 
       off.width = dw;
@@ -173,6 +180,8 @@ export function DitheredPortrait({
     image.decoding = "async";
     image.onload = () => {
       img = image;
+      // Lets CSS size the canvas to the photo's proportions (used on mobile)
+      canvas.style.setProperty("--portrait-ratio", `${image.naturalWidth} / ${image.naturalHeight}`);
       schedule();
     };
     image.src = src;
@@ -188,7 +197,7 @@ export function DitheredPortrait({
       cancelAnimationFrame(raf);
       image.onload = null;
     };
-  }, [src, dotSize, texture, contrast, brightness, align]);
+  }, [src, dotSize, texture, contrast, brightness, align, alignX]);
 
-  return <canvas ref={ref} role="img" aria-label={alt} className={`h-full w-full ${className ?? ""}`} />;
+  return <canvas ref={ref} role="img" aria-label={alt} className={className ?? "block h-full w-full"} />;
 }
