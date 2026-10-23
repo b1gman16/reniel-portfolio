@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-// 8x8 ordered-dither (Bayer) threshold matrix, built once
+// 8x8 ordered-dither (Bayer) threshold matrix, built once. Used as the halftone texture.
 const BAYER8 = (() => {
   let m = [0];
   for (let n = 1; n < 8; n *= 2) {
@@ -20,24 +20,38 @@ const BAYER8 = (() => {
   return m;
 })();
 
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+
 type Props = {
   src: string;
   alt: string;
-  /** Size of one dot in CSS pixels. Smaller = finer detail, larger = chunkier. */
+  /** Size of one texture dot in CSS pixels. Smaller = finer, larger = chunkier. */
   dotSize?: number;
-  /** Raise for punchier dots, lower for softer. */
+  /** How much halftone texture is mixed into the grayscale photo: 0 = smooth photo, 1 = full halftone. */
+  texture?: number;
+  /** 1 = neutral, higher = punchier, lower = softer. */
   contrast?: number;
   /** Positive lightens, negative darkens (about -40 to 40). */
   brightness?: number;
+  /** Where the photo sits inside its box. "bottom" makes the photo's lower edge meet the box's bottom. */
+  align?: "center" | "bottom";
   className?: string;
 };
 
 /**
- * Draws a photo as a black-and-white ordered dither at the screen's real resolution.
- * Dots are light on the dark theme and dark on the light theme. Transparent pixels (PNG cutouts)
- * stay transparent, so the page shows through around the subject.
+ * Draws a photo as a grayscale image with a halftone-style dot texture, at the screen's real
+ * resolution. Transparent pixels (PNG cutouts) stay transparent, so the page shows through.
  */
-export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, brightness = 0, className }: Props) {
+export function DitheredPortrait({
+  src,
+  alt,
+  dotSize = 1.5,
+  texture = 0.45,
+  contrast = 1.05,
+  brightness = 0,
+  align = "center",
+  className,
+}: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -59,38 +73,36 @@ export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, bri
       if (box.width < 2 || box.height < 2) return;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const cell = Math.max(1, Math.round(dotSize * dpr)); // device pixels per dot
+      const cell = Math.max(1, Math.round(dotSize * dpr)); // device pixels per texture dot
       const cw = Math.round(box.width * dpr);
       const ch = Math.round(box.height * dpr);
       canvas.width = cw;
       canvas.height = ch;
 
-      // Fit the photo inside the box (contain), centered
+      // Fit the photo inside the box (contain) at full device resolution
       const scale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
-      const dw = Math.round(img.naturalWidth * scale);
-      const dh = Math.round(img.naturalHeight * scale);
+      const dw = Math.max(1, Math.round(img.naturalWidth * scale));
+      const dh = Math.max(1, Math.round(img.naturalHeight * scale));
       const dx = Math.round((cw - dw) / 2);
-      const dy = Math.round((ch - dh) / 2);
-      const gw = Math.max(1, Math.floor(dw / cell));
-      const gh = Math.max(1, Math.floor(dh / cell));
+      const dy = align === "bottom" ? ch - dh : Math.round((ch - dh) / 2);
 
-      // Sample the photo down to one pixel per dot
-      off.width = gw;
-      off.height = gh;
+      off.width = dw;
+      off.height = dh;
       octx.imageSmoothingEnabled = true;
       octx.imageSmoothingQuality = "high";
-      octx.clearRect(0, 0, gw, gh);
-      octx.drawImage(img, 0, 0, gw, gh);
-      const data = octx.getImageData(0, 0, gw, gh).data;
+      octx.clearRect(0, 0, dw, dh);
+      octx.drawImage(img, 0, 0, dw, dh);
+      const frame = octx.getImageData(0, 0, dw, dh);
+      const data = frame.data;
 
-      // Luminance, plus a histogram so tones can be stretched to the full range
-      const lum = new Float32Array(gw * gh);
+      // Pass 1: luminance + histogram (to stretch tones to the full range)
+      const lum = new Float32Array(dw * dh);
       const hist = new Uint32Array(256);
       let count = 0;
       for (let i = 0; i < lum.length; i++) {
         const o = i * 4;
-        if (data[o + 3] < 128) {
-          lum[i] = -1; // transparent
+        if (data[o + 3] === 0) {
+          lum[i] = -1; // fully transparent
           continue;
         }
         const l = 0.299 * data[o] + 0.587 * data[o + 1] + 0.114 * data[o + 2];
@@ -103,7 +115,7 @@ export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, bri
       let acc = 0;
       for (let v = 0; v < 256; v++) {
         acc += hist[v];
-        if (acc >= count * 0.01) {
+        if (acc >= count * 0.02) {
           lo = v;
           break;
         }
@@ -111,7 +123,7 @@ export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, bri
       acc = 0;
       for (let v = 255; v >= 0; v--) {
         acc += hist[v];
-        if (acc >= count * 0.01) {
+        if (acc >= count * 0.02) {
           hi = v;
           break;
         }
@@ -121,32 +133,36 @@ export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, bri
         hi = 255;
       }
 
-      // Dots: light on dark theme, dark on light theme
+      // Pass 2: grayscale tone + halftone texture. Whites are capped and blacks lifted slightly so
+      // highlights keep visible texture and shadows keep detail.
       const dark = document.documentElement.dataset.theme === "dark";
-      const [r, g, b] = dark ? [243, 241, 235] : [16, 16, 16];
-      const out = octx.createImageData(gw, gh);
-      for (let y = 0; y < gh; y++) {
-        for (let x = 0; x < gw; x++) {
-          const i = y * gw + x;
+      const shadow = dark ? [11, 11, 12] : [16, 16, 16];
+      const light = dark ? [243, 241, 235] : [232, 229, 220];
+      const LOW = 0.04;
+      const HIGH = 0.84;
+      for (let y = 0; y < dh; y++) {
+        const cy = Math.floor(y / cell) % 8;
+        for (let x = 0; x < dw; x++) {
+          const i = y * dw + x;
           const l = lum[i];
           if (l < 0) continue;
           let v = ((l - lo) / (hi - lo)) * 255;
           v = (v - 128) * contrast + 128 + brightness;
-          const threshold = ((BAYER8[(y % 8) * 8 + (x % 8)] + 0.5) / 64) * 255;
-          const on = dark ? v > threshold : v < threshold;
-          if (!on) continue;
+          const m = LOW + clamp01(v / 255) * (HIGH - LOW);
+          const t = (BAYER8[cy * 8 + (Math.floor(x / cell) % 8)] + 0.5) / 64;
+          const halftone = m > t ? 1 : 0;
+          const b = m * (1 - texture) + halftone * texture;
           const o = i * 4;
-          out.data[o] = r;
-          out.data[o + 1] = g;
-          out.data[o + 2] = b;
-          out.data[o + 3] = 255;
+          data[o] = shadow[0] + (light[0] - shadow[0]) * b;
+          data[o + 1] = shadow[1] + (light[1] - shadow[1]) * b;
+          data[o + 2] = shadow[2] + (light[2] - shadow[2]) * b;
+          // alpha is left as-is, so the cutout's soft edges stay smooth
         }
       }
-      octx.putImageData(out, 0, 0);
+      octx.putImageData(frame, 0, 0);
 
-      // Scale up with hard pixels so dots stay crisp
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(off, 0, 0, gw, gh, dx, dy, gw * cell, gh * cell);
+      ctx.drawImage(off, dx, dy);
     };
 
     const schedule = () => {
@@ -172,7 +188,7 @@ export function DitheredPortrait({ src, alt, dotSize = 1.5, contrast = 1.15, bri
       cancelAnimationFrame(raf);
       image.onload = null;
     };
-  }, [src, dotSize, contrast, brightness]);
+  }, [src, dotSize, texture, contrast, brightness, align]);
 
   return <canvas ref={ref} role="img" aria-label={alt} className={`h-full w-full ${className ?? ""}`} />;
 }

@@ -37,9 +37,20 @@
   --color-muted: var(--muted);
   --color-primary: var(--ink); /* SonarGrid dots follow the theme */
 
-  --font-display: var(--font-instrument), "Times New Roman", serif;
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Fonts (self-hosted via @fontsource-variable, imported in layout.tsx):
+     headings = Geist Mono, body = Inter, system accents = JetBrains Mono */
+  --font-display: "Geist Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+/* Every heading uses the display (Geist Mono) face. In the base layer so utilities can still override. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
 }
 
 /* Glass panels: translucent fill + backdrop blur so the sonar field stays out of the way of content */

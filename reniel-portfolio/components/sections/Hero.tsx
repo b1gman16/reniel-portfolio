@@ -8,30 +8,14 @@ import { site } from "@/data/site";
 import { technologies } from "@/data/technologies";
 import { revealDelay } from "@/lib/reveal";
 
-/* ---- Tweak the hero's look here ------------------------------------------ */
-
-// Name glow: two stacked halos (tight + wide)
-const GLOW = {
-  near: 14, // px, size of the tight halo
-  far: 28, // px, size of the wide halo
-  strengthLight: 0.2, // 0 = none, 1 = solid. Light mode is a soft dark shadow
-  strengthDark: 0.4, // dark mode is a light halo
-};
-
-// Dithered portrait
+/* ---- Tweak the portrait here --------------------------------------------- */
 const PORTRAIT = {
-  dotSize: 0.5, // CSS px per dot: 1 = fine detail, 2–3 = chunky halftone
+  texture: 0.4, // 0 = smooth grayscale photo ... 1 = full halftone dots
+  dotSize: 1.45, // CSS px per texture dot: 1 = fine, 2–3 = chunky
   contrast: 1.5, // 1 = neutral, higher = punchier, lower = softer
-  brightness: 0, // -40 darker ... +40 lighter
+  brightness: +15, // -40 darker ... +40 lighter
 };
-
 /* -------------------------------------------------------------------------- */
-
-const glowStyle = {
-  "--glow-light": `rgb(16 16 16 / ${GLOW.strengthLight})`,
-  "--glow-dark": `rgb(243 241 235 / ${GLOW.strengthDark})`,
-  textShadow: `0 0 ${GLOW.near}px var(--glow), 0 0 ${GLOW.far}px var(--glow)`,
-} as React.CSSProperties;
 
 const links = [
   { label: "GitHub", href: `https://github.com/${site.githubUsername}`, Icon: GithubLogo },
@@ -43,38 +27,32 @@ export function Hero() {
   return (
     // Full width on desktop: the sidebar is hidden here, so cancel the layout's sidebar offset.
     <section id="home" className="screen flex flex-col border-b border-line lg:-ml-[264px] lg:min-h-dvh">
-      <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-8 px-6 py-12 md:px-10 lg:grid-cols-12 lg:gap-12 lg:py-10">
-        {/* Greeting, intro, links */}
-        <div className="flex flex-col justify-center lg:col-span-7">
+      <div className="mx-auto grid w-full max-w-[88rem] flex-1 gap-10 px-6 pb-0 pt-12 md:px-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-end lg:gap-14 lg:pt-10">
+        {/* Greeting, intro, links. "@container" lets the name size itself to this column (cqw units). */}
+        <div className="@container flex flex-col justify-center lg:self-center lg:pb-10">
           <div data-reveal="now" style={revealDelay(0)}>
             <SectionLabel className="text-muted">Independent Builder / Cebu, PH</SectionLabel>
           </div>
 
-          <h1
-            data-reveal="now"
-            style={revealDelay(100)}
-            className="mt-4 font-display font-medium leading-[0.95] tracking-tight"
-          >
-            <span className="block text-[length:clamp(1.25rem,min(2.6vw,5vh),2.25rem)] text-muted">Hi, I am</span>
-            {/* The name glows: light halo in dark mode, soft shadow in light mode (see GLOW above) */}
-            <span
-              style={glowStyle}
-              className="mt-2 block text-[length:clamp(2.75rem,min(7.2vw,12.5vh),6.5rem)] [--glow:var(--glow-light)] [[data-theme=dark]_&]:[--glow:var(--glow-dark)]"
-            >
-              <span className="block">Reniel</span>
-              <span className="block">Tejones</span>
+          {/* Hierarchy: small muted greeting, then the name at the largest size and heaviest weight, on one line */}
+          <h1 data-reveal="now" style={revealDelay(100)} className="mt-5 font-display leading-none">
+            <span className="block text-[length:clamp(1rem,3.4cqw,1.6rem)] font-normal tracking-normal text-muted">
+              Hi, I am
+            </span>
+            <span className="mt-3 block whitespace-nowrap text-[length:min(11.5cqw,12vh,7.5rem)] font-semibold tracking-[-0.04em]">
+              Reniel Tejones
             </span>
           </h1>
 
           <p
             data-reveal="now"
             style={revealDelay(220)}
-            className="mt-6 max-w-xl text-base leading-relaxed text-ink/85 [@media(max-height:760px)]:text-[15px]"
+            className="mt-7 max-w-xl text-[15px] leading-relaxed text-ink/70 lg:text-base"
           >
             I turn ideas into things people can actually use. With a background in computer engineering, I build across software, hardware, and the web — figuring things out along the way. Lately, I’ve been exploring how technology and design can come together to create better digital experiences.
           </p>
 
-          <div data-reveal="now" style={revealDelay(320)} className="mt-7 flex flex-wrap items-center gap-4">
+          <div data-reveal="now" style={revealDelay(320)} className="mt-8 flex flex-wrap items-center gap-4">
             <Button href="#work" icon={ArrowDown}>Explore selected work</Button>
             <Button href="#contact" icon={PaperPlaneTilt}>Get in touch</Button>
             <ul className="flex items-center gap-3 sm:ml-2">
@@ -95,22 +73,25 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Portrait: centered beside the text, fitted inside its box, never clipped */}
+        {/* Portrait: no frame, no backdrop. The figure stands on the technologies bar. */}
         <div
           data-reveal="now"
           style={revealDelay(200)}
-          className="relative h-[22rem] w-full lg:col-span-5 lg:h-[min(62dvh,36rem)]"
+          className="relative h-[26rem] w-full lg:h-[min(78dvh,44rem)]"
         >
           {site.portrait ? (
             <DitheredPortrait
               src={site.portrait}
               alt={`Portrait of ${site.name}`}
+              align="bottom"
+              texture={PORTRAIT.texture}
               dotSize={PORTRAIT.dotSize}
               contrast={PORTRAIT.contrast}
               brightness={PORTRAIT.brightness}
+              className="absolute inset-0"
             />
           ) : (
-            <div className="flex h-full items-center justify-center border border-dashed border-silver p-4 text-center">
+            <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
               <p className="label text-muted">Portrait placeholder<br />public/images/portrait.png</p>
             </div>
           )}

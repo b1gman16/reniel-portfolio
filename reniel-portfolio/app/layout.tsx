@@ -1,13 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
+// Fonts are self-hosted from npm packages, so they never depend on a network download.
+import "@fontsource-variable/inter"; // body copy
+import "@fontsource-variable/geist-mono"; // headings
+import "@fontsource-variable/jetbrains-mono"; // system accents
 import "./globals.css";
-
-// Body copy
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-// Headings
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
-// System accents (labels, links, metadata)
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 const description =
   "Reniel Tejones is a Computer Engineer in Cebu, Philippines, building websites, business systems, and intelligent tools.";
@@ -31,11 +27,7 @@ const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
