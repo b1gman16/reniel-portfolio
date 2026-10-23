@@ -15,44 +15,61 @@ function show(el: HTMLElement) {
 /**
  * Reveals [data-reveal] elements as they scroll into view (including ones streamed in later,
  * like the GitHub panels). Elements marked data-reveal="now" are above the fold, so they reveal
- * immediately on load instead of waiting for the observer.
+ * immediately instead of waiting for the observer.
+ *
+ * If the splash screen is showing, nothing starts until it has finished fading out ("splash-done").
  */
 export function RevealObserver() {
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const el = entry.target as HTMLElement;
-          io.unobserve(el);
-          show(el);
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
-    );
+    let stop = () => {};
 
-    const seen = new WeakSet<Element>();
-    const scan = () => {
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
-        if (seen.has(el)) return;
-        seen.add(el);
-        if (el.dataset.reveal === "now") {
-          // Next frame, so the hidden starting state is painted and the transition actually runs.
-          requestAnimationFrame(() => show(el));
-        } else {
-          io.observe(el);
-        }
-      });
+    const start = () => {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            io.unobserve(el);
+            show(el);
+          }
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      );
+
+      const seen = new WeakSet<Element>();
+      const scan = () => {
+        document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+          if (seen.has(el)) return;
+          seen.add(el);
+          if (el.dataset.reveal === "now") {
+            // Next frame, so the hidden starting state is painted and the transition actually runs.
+            requestAnimationFrame(() => show(el));
+          } else {
+            io.observe(el);
+          }
+        });
+      };
+
+      scan();
+      const mo = new MutationObserver(scan);
+      mo.observe(document.body, { childList: true, subtree: true });
+
+      stop = () => {
+        io.disconnect();
+        mo.disconnect();
+      };
     };
 
-    scan();
-    const mo = new MutationObserver(scan);
-    mo.observe(document.body, { childList: true, subtree: true });
+    if (document.documentElement.dataset.splash === "on") {
+      window.addEventListener("splash-done", start, { once: true });
+      return () => {
+        window.removeEventListener("splash-done", start);
+        stop();
+      };
+    }
 
-    return () => {
-      io.disconnect();
-      mo.disconnect();
-    };
+    start();
+    return () => stop();
   }, []);
 
   return null;

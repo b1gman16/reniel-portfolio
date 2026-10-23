@@ -5,6 +5,9 @@ import "@fontsource-variable/geist-mono"; // headings
 import "@fontsource-variable/jetbrains-mono"; // system accents
 import "./globals.css";
 
+/* Splash screen: true = once per browser session, false = on every page load (handy while tweaking) */
+const SHOW_SPLASH_ONCE_PER_SESSION = true;
+
 const description =
   "Reniel Tejones is a Computer Engineer in Cebu, Philippines, building websites, business systems, and intelligent tools.";
 
@@ -22,14 +25,19 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before first paint: use the saved choice, else the system preference. Prevents a theme flash.
-const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}`;
+// Runs before first paint, so there is no theme flash and no flash of the page before the splash.
+// 1) theme: saved choice, else the system preference
+// 2) splash: mark <html data-splash="on"> unless it was already seen this session or motion is reduced
+const bootScript = `
+try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}
+try{var once=${SHOW_SPLASH_ONCE_PER_SESSION};var seen=once&&sessionStorage.getItem("splash-seen");if(!seen&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.dataset.splash="on";document.documentElement.style.overflow="hidden"}}catch(e){}
+`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body className="antialiased">{children}</body>
     </html>

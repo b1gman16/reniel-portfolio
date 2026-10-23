@@ -10,12 +10,14 @@ import { Hero } from "@/components/sections/Hero";
 import { RevealObserver } from "@/components/ui/RevealObserver";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { SonarGrid } from "@/components/ui/sonar-grid";
+import { SplashScreen } from "@/components/ui/SplashScreen";
 
 export const revalidate = 1800; // refresh GitHub-backed sections every 30 minutes, no redeploy needed
 
 export default function Home() {
   return (
     <>
+      <SplashScreen />
       {/* Full-page decorative field: fixed behind all content, taps anywhere send a ring.
           No color prop: dots use the theme's ink color, so they flip with dark mode. */}
       <SonarGrid
